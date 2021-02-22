@@ -1,0 +1,22 @@
+﻿.aimbanner {height:300px;overflow:hidden;background:url('proving/top-bg.jpg') no-repeat top center,url('proving/bg.gif');}
+@media only screen and (min-width: 600px) {
+    .www .main {
+        -webkit-box-shadow: inset 0px 35px 98px -52px rgba(0,0,0,0.75);
+        -moz-box-shadow: inset 0px 35px 98px -52px rgba(0,0,0,0.75);
+        box-shadow: inset 0px 35px 98px -52px rgba(0,0,0,0.75);
+        background: #fafafa;
+    }
+
+    .www .apv {
+        -webkit-box-shadow: inset -23px 2px 98px -52px rgba(0,0,0,0.75);
+        -moz-box-shadow: inset -23px 2px 98px -52px rgba(0,0,0,0.75);
+        box-shadow: inset -23px 2px 98px -52px rgba(0,0,0,0.75);
+    }
+}
+/*.www .aiv { padding:20px 0;}
+.www .aiv ul>* { padding:5px 20px;}
+.www .aiv ul>li { border-top:solid 1px #eee;  border-bottom:solid 1px #fff;  }
+.www .aiv ul>li:hover::before { content:'';display:inline-block; position:absolute;left:0;top:0;bottom:0;width:5px;background:rgba(20,100,170,0.2);}*/
+
+.toaddress{padding:2cm 0cm;}
+

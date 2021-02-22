@@ -1,0 +1,53 @@
+{
+    "dbs": {
+        "server": "localhost",
+        "port": 1433,
+        "database": "aim",
+        "user": "aim",
+        "password": "A!mUser"
+    },
+    "ws": {
+        "protocol": "http",
+        "hostname": "localhost",
+        "port": 80,
+        "domain": "aliconnect"
+    },
+    "wss": {
+        "hostname": "localhost",
+        "protocol": "ws",
+        "port": 81
+    },
+    "mqqt": {
+        "http": {
+            "port": 1883,
+            "bundle": true,
+            "static": "./"
+        },
+        "https": {
+            "port": 1884,
+            "bundle": true,
+            "static": "./"
+        },
+        "logger": {
+            "name": "aliconnectSecure",
+            "level": 40
+        }
+    },
+    "secure": {
+        "key": "/aim/cert/cert.key",
+        "cert": "/aim/cert/cert.cer",
+        "ca": "/aim/cert/cert.ca"
+    },
+    "mail": {
+        "SMTPSecure": "ssl",
+        "Port": "587",
+        "SMTPAuth": true,
+        "Host": "tls://smtp.office365.com",
+        "Username": "{username}",
+        "Password": "{password}"
+    },
+    "mse": {
+        "clientId": "{clientId}",
+        "clientSecret": "{clientSecret}"
+    }
+}

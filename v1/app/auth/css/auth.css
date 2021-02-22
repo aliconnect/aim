@@ -1,0 +1,304 @@
+﻿@font-face {
+	font-family: 'Segoe UI Light';
+	font-weight: 300;
+	src: local("Segoe UI Semilight"), local("Segoe UI"), local("segoeuil");
+	src: url("../../lib/css/fonts/segoeuil.ttf");
+}
+
+@font-face {
+	font-family: 'Segoe UI';
+	font-weight: 300;
+	src: local("Segoe UI Semilight"), local("Segoe UI"), local("segoeui");
+	src: url("../../lib/css/fonts/segoeui.ttf");
+}
+
+
+html, body {
+	padding: 0;
+	margin: 0;
+}
+
+/*body[wait]:not([wait="0"]) form {
+		display: none;
+	}*/
+
+input:not([type='checkbox']) {
+	display: block;
+	width: 100%;
+	line-height: 30px;
+}
+
+input {
+	line-height: 36px;
+	border: none;
+	border-bottom: solid 1px #999;
+	outline: none;
+}
+
+
+.row.btns {
+	justify-content: flex-end;
+	/*align-items:flex-end;*/
+}
+
+.button {
+	border: none;
+	font: inherit;
+	cursor: pointer;
+	float: right;
+	display: inline-block;
+	background-color: rgb(200,200,200);
+	color: white;
+	padding: 10px 20px;
+	margin: 0 5px;
+}
+
+
+	.button:hover::before {
+		content: '';
+		display: inline-block;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		background-color: rgba(0,0,0,0.08);
+	}
+
+
+	.button[type="submit"] {
+		background-color: rgb(1,104,184);
+	}
+
+	.button:focus {
+		outline: solid 2px black;
+		/*background-color: rgb(1,104,184);*/
+	}
+
+img.logo {
+	max-height: 25px;
+	object-fit: scale-down;
+	object-position: left;
+}
+
+h1 {
+	font-family: "Segoe UI Light", "Segoe WP", sans-serif, Tahoma, Arial;
+	font-size: 16pt;
+	color: black;
+}
+
+body.auth {
+	font-family: "Segoe UI Webfont", "Segoe WP", sans-serif, Tahoma, Arial;
+	background: center center black;
+	background-size: cover;
+	height: 100%;
+	width: 100%;
+	font-size: 14px;
+}
+
+	/*body.auth > img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center center;
+	}*/
+
+	/*body.auth::before {
+		content: '';
+		display: block;
+		position: fixed;
+		height: 47%;
+		width: 100%;
+		background: white url('../img/bg.png') top no-repeat;
+		background-size: cover;
+	}*/
+
+	/*body.auth > div {
+		display: table-cell;
+		vertical-align: middle;
+	}*/
+
+
+	body.auth .panel {
+		display: block;
+		position: fixed;
+		margin: auto;
+		top: 0px;
+		bottom: 30px;
+		left: 0;
+		right: 0;
+		width: 100%;
+		height: 100%;
+		background: white;
+		overflow: hidden;
+		padding: 10px;
+	}
+
+		body.auth .panel > .col {
+			position: absolute;
+			margin: auto;
+			bottom: 0;
+			top: 0px;
+			overflow: hidden;
+			transition: all 1s ease;
+			left: 0px;
+			right: auto;
+			width:100%;
+			display: none;
+			padding: 50px 10px;
+			visibility: hidden;
+		}
+
+
+			body.auth .panel > .col[pos] {
+				display: inline-flex;
+				opacity: 0;
+			}
+
+			body.auth .panel > .col[pos="r"] {
+				left: 600px;
+			}
+
+			body.auth .panel > .col[pos="m"] {
+				left: 0;
+				opacity: 1;
+				visibility: visible;
+			}
+
+			body.auth .panel > .col[pos="l"] {
+				left: -600px;
+			}
+
+/*body.auth .panel form {
+			padding-bottom: 40px;
+		}*/
+
+/*body.auth .panel form > div {
+				margin: 20px 0;
+			}*/
+
+@media only screen and (min-width: 500px) {
+	body.auth .panel {
+		max-height: 480px;
+		max-width: 500px;
+		-webkit-box-shadow: 0 10px 30px rgba(0,0,0,.3);
+		-moz-box-shadow: 0 10px 30px rgba(0,0,0,.3);
+		box-shadow: 0 10px 30px rgba(0,0,0,.3);
+		padding: 40px;
+	}
+
+		body.auth .panel > .col {
+			padding: 80px 40px 40px 40px;
+		}
+}
+
+h1 {
+	margin: 10px 0;
+}
+
+#qrcode {
+	top: 20px;
+}
+
+a:not(:hover) {
+	text-decoration: none;
+}
+
+.header {
+	position: fixed;
+	font-family: "Segoe UI Light", "Segoe WP", sans-serif, Tahoma, Arial;
+	top: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	max-width: 1200px;
+	line-height: 30px;
+	text-align: right;
+	font-size: 12pt;
+	color: white;
+}
+
+.footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	text-align: right;
+	color: white;
+	font-size: 10pt;
+	padding: 5px 0;
+	width: 100%;
+	overflow: visible;
+	z-index: 99;
+	clear: both;
+	background-color: rgba(0,0,0,0.5);
+}
+
+	.footer > * {
+		margin: 0 10px;
+	}
+
+	.footer a {
+		color: inherit;
+	}
+
+.statusbar:not(:empty) {
+	position: fixed;
+	line-height: 22px;
+	bottom: 0;
+	left: 0;
+	z-index: 100;
+	max-width: 60%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	background: #fafafa;
+	color: #666;
+	border-top: solid 1px #ccc;
+	border-right: solid 1px #ccc;
+	font-size: 9pt;
+	border-top-right-radius: 5px;
+	min-width: 400px;
+	padding: 0 3px;
+}
+
+#canvas {
+	position: fixed;
+	margin: auto;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+#status {
+	position: absolute;
+	bottom: 100px;
+}
+
+#formMessages {
+	z-index: 20;
+}
+
+.abtn.icn.arrowLeft {
+	border-radius: 50px;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	padding: 0;
+	margin-right: 5px;
+}
+
+.button:hover, a:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+a:hover {
+	color: #666;
+}
+
+input[type="checkbox"]:focus + label {
+	outline: solid 1px blue;
+}
+
+

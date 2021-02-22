@@ -1,0 +1,49 @@
+{
+	"Products": {
+		"Schuurpapier": "Schuurpapier,sheet",
+		"Schuurschijf": "schuurschijven,schuurschijf,disc",
+		"Plamuur": "plamuur",
+		"Kunststofplamuur": "kunststof%plamuur",
+		"Glasvezelplamuur": "glasvezel%plamuur"
+	},
+	"Attributes": {
+		"Product": {
+			"Plamuur": ""
+		},
+		"Merk": {
+			"Airo": "",
+			"Maxmeyer": ""
+		},
+		"Type": {
+			"Unipol": "",
+			"Airo Flex": ""
+		},
+		"Scherpte": {
+
+		},
+		"Korrel": {
+			"P80": "",
+			"P120": "",
+			"P180": ""
+		},
+		"Soort": {
+			"Easy Finish": ""
+		},
+		"Color": {
+			"Rood": "red",
+			"Geel": "yellow",
+			"Blauw": "blue,bleu,aqua"
+		},
+		"Unit": {
+			"Doos": "",
+			"Blik": "",
+			"Rol": "",
+			"Koker": ""
+		},
+		"Eenheid": {
+			"Kg": "",
+			"Liter": "Ltr",
+			"Meter": "mtr,m"
+		}
+	}
+}

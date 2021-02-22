@@ -1,0 +1,17 @@
+{
+	"manifest_version": 2,
+	"name": "Aliconnect Mobile Web Application",
+	"short_name": "Aliconnect",
+	"description": "Aliconnect user application.",
+	"version": "1",
+	"icons": [ 
+		{ "128": "icon_128.png" }
+	],
+	"permissions": [ ],
+	"app": {
+		"background": {
+			"scripts": [ "background.js" ]
+		}
+	},
+	"minimum_chrome_version": "28"
+}

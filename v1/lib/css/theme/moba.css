@@ -1,0 +1,15 @@
+﻿.ganthchart .bar.bb {
+    background-color: red;
+}
+
+.ganthchart .bar.ship {
+    background-color: yellow;
+}
+
+.bgDark {
+    background-color: rgb(24,68,127);
+}
+
+h1, h2, a {
+    color: rgb(24,68,127);
+}

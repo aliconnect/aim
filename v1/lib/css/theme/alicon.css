@@ -1,0 +1,13 @@
+﻿.bgDark {
+    background-color: rgb(180,30,35);
+}
+
+h1, h2, a {
+    color: rgb(180,30,35);
+}
+
+.aimbanner {
+    height: 300px;
+    overflow: hidden;
+}
+/*.aimlogo::before {content:'';display:inline-block;position:absolute;left:-200px;width:1200px;height:200px;background:url("../img/logo.png") no-repeat 200px 20px,radial-gradient(rgba(255,255,255,0.7) 25%, transparent 70%, transparent 100%) 0px -50px no-repeat;background-size:auto 100px,650px 200px,cover;overflow:unset;}*/

@@ -1,0 +1,372 @@
+﻿.aim[wv] .bgd {
+	background-color: rgb(243,195,1) !important;
+	color: #333;
+}
+
+.aimbanner {
+	height: 190px;
+	background-color: rgb(40,40,40);
+}
+
+.aimlogo {
+	background: url("img/logo.png") no-repeat 0px 20px;
+}
+
+html, body {
+	background: black;
+	color: #ccc;
+	margin: 0;
+	padding: 0;
+}
+
+	body.site {
+		padding-top: 46px;
+	}
+
+		body.site .row.footer {
+			background-color: #333;
+			color:#ccc;
+			padding: 10px 0;
+		}
+
+.row.inner > div {
+	max-width: 1200px;
+	flex-basis: 1200px;
+	flex-shrink: 1;
+	margin: 0 auto;
+}
+
+.row.nav {
+	margin: 0 0 0 auto;
+	padding: 0;
+	position: unset;
+	font-size: 14pt;
+	/*color: white;*/
+}
+
+	/*.row.nav ul, .row.nav li {
+		background-color: inherit;
+	}*/
+
+
+	.row.nav a {
+		text-decoration: none;
+	}
+
+	.row.nav li {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.row.nav > li[open]:not([open="1"]) > ul,
+	.row.nav > li > lu > li[open]:not([open="1"]) > ul,
+	.row.nav > li > lu > li > lu > li[open]:not([open="1"]) > ul {
+		position: absolute;
+		display: none;
+	}
+
+	.row.nav ul a[href]:hover {
+		text-decoration: underline;
+	}
+
+	.row.nav > li {
+		position: unset;
+		/*display: inline-block;*/
+	}
+
+		.row.nav > li a {
+			/*display: inline-block;*/
+			padding: 0 10px;
+			color: inherit;
+		}
+
+		.row.nav > li > div:hover {
+			background: rgba(255,255,255,0.2);
+		}
+
+		.row.nav > li > ul {
+			/*background-color: inherit;*/
+			position: absolute;
+			top: 45px;
+			left: 0;
+			right: 0;
+			border-left: solid 1px rgba(180,180,180,0.2);
+			border-right: solid 1px rgba(180,180,180,0.2);
+			border-bottom: solid 1px rgba(180,180,180,0.2);
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			min-height: 400px;
+		}
+
+			.row.nav > li > ul > li {
+				position: unset;
+				flex-direction: column;
+			}
+
+				.row.nav > li > ul > li > a {
+					font-family: "Segoe UI Light", "Segoe WP";
+					display: block;
+					/*line-height: 30px;
+                    padding: 10px;*/
+					cursor: pointer;
+				}
+
+				.row.nav > li > ul > li:hover > ul {
+					z-index: 10;
+				}
+
+				.row.nav > li > ul > li:hover > a {
+					background-color: rgba(127,127,127,0.3);
+					cursor: pointer;
+				}
+
+				.row.nav > li > ul > li > ul {
+					position: absolute;
+					left: 200px;
+					top: 0;
+					right: 0;
+					/*background-color: white;*/
+					border-left: solid 1px rgba(180,180,180,0.2);
+					list-style: none;
+					padding: 0px;
+					min-height: 100%;
+					-webkit-columns: 100px 3;
+					-moz-columns: 100px 3;
+					columns: 100px 3;
+					bottom: 100px;
+					overflow: hidden;
+					/*background-color:inherit;*/
+				}
+
+					.row.nav > li > ul > li > ul > li {
+						break-inside: avoid-column;
+						-webkit-column-break-inside: avoid;
+					}
+
+						.row.nav > li > ul > li > ul > li > a {
+							font-family: "Segoe UI Light", "Segoe WP";
+							line-height: 24px;
+							/*margin-bottom: 20px;*/
+						}
+
+						.row.nav > li > ul > li > ul > li > ul {
+							list-style: none;
+							padding: 0;
+							margin: 0;
+							margin-bottom: 20px;
+						}
+
+							.row.nav > li > ul > li > ul > li > ul > li > a {
+								line-height: 20px;
+								font-size: 12pt;
+								white-space: nowrap;
+								/*overflow: hidden;*/
+								/*text-overflow: ellipsis;*/
+								/*font-weight: 400;
+                                color: blue;*/
+							}
+
+								.row.nav > li > ul > li > ul > li > ul > li > a:hover {
+									text-decoration: underline;
+									cursor: pointer;
+								}
+
+		.row.nav > li > a {
+			/*display: inline-block;*/
+			/*line-height: 26px;
+            padding: 10px;*/
+			/*color: white;*/
+		}
+
+		.row.nav > li:hover > a:hover {
+			background: rgba(127,127,127,0.3);
+			cursor: pointer;
+		}
+
+
+.site .page {
+}
+
+	.site .page:empty, .col.list:empty, .col.info:empty {
+		display: none;
+	}
+
+	.site .page:not(:empty) + .col.list {
+		display: none;
+	}
+
+.webpage {
+}
+
+	.webpage img {
+		display: inline-block;
+		width: 250px;
+		object-fit: cover;
+		margin: 20px 20px 0 0;
+	}
+
+	.webpage .header .subject {
+		font-size: 110%;
+	}
+
+	.webpage > .col .subject,
+	.webpage .header .BodyHTML {
+		font-size: 90%;
+		color: #666;
+	}
+
+	.webpage label {
+		display: none;
+	}
+
+
+.bannerimage {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+	background: no-repeat 0px 0px;
+	background-size: cover;
+	width: 100%;
+	max-width: unset !important;
+	animation: imageAnimation 30s linear infinite 0s;
+	opacity: 0;
+}
+
+.bannertext {
+	position: absolute;
+	display: inline-block;
+	margin: auto;
+	bottom: 30px;
+	right: 0;
+	z-index: 1;
+	color: white;
+	animation: titleAnimation 30s linear infinite 0s;
+	opacity: 0;
+	font-weight: 600;
+	font-size: 50px;
+	text-shadow: 0px 0px 5px #000059;
+	text-align: right;
+}
+
+
+.row.path a {
+	margin-right: 5px;
+}
+
+	.row.path a:not(:first-child) {
+		margin-left: 5px;
+	}
+
+#elLogo {
+	height: 120px;
+	width: 300px;
+	background: left center no-repeat;
+	background-size: contain;
+	z-index: 1;
+}
+
+.header {
+	margin: 20px 0;
+}
+
+	.header.page .subject {
+		font-size:larger;
+	}
+
+	.header h2 {
+		margin-top: 0;
+	}
+
+	.header .startDT{
+		font-size: smaller;
+		color:rgba(180,180,180,0.8);
+	}
+
+
+
+	.header .images {
+	}
+
+		.header .images img {
+			object-fit: contain;
+			width: 200px;
+			max-height: 200px;
+			margin-right: 20px;
+		}
+
+.night img {
+	background: white;
+}
+
+.inner.last {
+	padding: 10px 0;
+	font-size: 10pt;
+}
+
+	.inner.last a {
+		color: inherit;
+	}
+
+		.inner.last a:not(:hover) {
+			text-decoration: none;
+		}
+
+
+
+/*body:not(.night) .main {
+	background: white;
+	color: #333;
+}
+
+
+.night {
+}
+
+	.night .row.nav > li > ul {
+		background-color: #333;
+		color: #ccc;
+	}*/
+
+.list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+	.list > li {
+		padding: 10px 0;
+	}
+
+		.list > li a {
+			font-family: arial,sans-serif;
+			font-size: 18px;
+			padding: 5px 0;
+		}
+
+			.list > li a:not(:hover) {
+				text-decoration: none;
+			}
+
+	.list .row.aco {
+		flex-wrap: wrap;
+		line-height: 1.6;
+		word-wrap: break-word;
+		font-size: small;
+		font-family: arial,sans-serif;
+	}
+
+	.list span {
+		flex-shrink: initial;
+	}
+
+#elPage:empty,
+#elPage:not(:empty) + #elList {
+	display: none;
+}
+
+

@@ -1,0 +1,34 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Aliconnect Content Server",
+    "description": "Server",
+    "termsOfService": "https://aliconnect.nl/terms/",
+    "contact": {
+      "name": "Aliconnect API Team",
+      "email": "support@aliconnect.nl",
+      "url": "https://aliconnect.nl"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "externalDocs": {
+    "description": "find more info here",
+    "url": "https://aliconnect.nl/about"
+  },
+  "host": "aliconnect.nl",
+  "basePath": "/api",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ]
+}

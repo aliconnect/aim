@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tns.aliconnect.nl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+	<wsdl:types>
+		<s:schema elementFormDefault="qualified" targetNamespace="http://tns.aliconnect.nl/">
+			<s:element name="ReportChanges">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="WebLogItemArray" type="tns:ArrayOfWebLogItem" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:complexType name="ArrayOfWebLogItem">
+				<s:sequence>
+					<s:element minOccurs="0" maxOccurs="unbounded" name="WebLogItem" nillable="true" type="tns:WebLogItem" />
+				</s:sequence>
+			</s:complexType>
+			<s:complexType name="WebLogItem">
+				<s:sequence>
+					<s:element minOccurs="1" maxOccurs="1" name="LogID" type="s:int" />
+					
+					<s:element minOccurs="1" maxOccurs="1" name="SystemInstanceID" nillable="true" type="s:int" />
+					<s:element minOccurs="1" maxOccurs="1" name="GroupID" nillable="true" type="s:int" />
+					<s:element minOccurs="1" maxOccurs="1" name="LocationID" type="s:int" />
+					<s:element minOccurs="1" maxOccurs="1" name="TagID" nillable="true" type="s:int" />
+					
+					<s:element minOccurs="1" maxOccurs="1" name="LogType" type="tns:LogTypes" />
+					<s:element minOccurs="0" maxOccurs="1" name="TextualValue" type="s:string" />
+					<s:element minOccurs="1" maxOccurs="1" name="NumericValue" type="s:double" />
+					<s:element minOccurs="1" maxOccurs="1" name="TimeStamp" type="s:dateTime" />
+					<s:element minOccurs="1" maxOccurs="1" name="Quality" type="tns:TagFlags" />
+					<s:element minOccurs="1" maxOccurs="1" name="StandardOutput" type="tns:StandardOutputs" />
+				</s:sequence>
+			</s:complexType>
+			<s:simpleType name="LogTypes">
+				<s:restriction base="s:string">
+					<s:enumeration value="TagAttribute" />
+					<s:enumeration value="TagSO_Measurement_1" />
+					<s:enumeration value="TagSO_Measurement_2" />
+					<s:enumeration value="TagSO_Measurement_3" />
+					<s:enumeration value="TagSO_Measurement_4" />
+					<s:enumeration value="TagSO_Measurement_5" />
+					<s:enumeration value="TagSO_RunningMode" />
+					<s:enumeration value="LocationSumAlarm" />
+					<s:enumeration value="LocationSumState" />
+					<s:enumeration value="LocationSO_CriticalFailure" />
+					<s:enumeration value="LocationSO_NonCriticalFailure" />
+					<s:enumeration value="LocationSO_Locking" />
+					<s:enumeration value="LocationSO_Maintenance" />
+					<s:enumeration value="LocationSO_Running" />
+					<s:enumeration value="LocationSO_RunningMode" />
+					<s:enumeration value="LocationSO_Security" />
+					<s:enumeration value="LocationSO_PreWarning_1" />
+					<s:enumeration value="LocationSO_PreWarning_2" />
+					<s:enumeration value="LocationSO_PreWarning_3" />
+					<s:enumeration value="LocationSO_MeasurementErrorFlag" />
+					<s:enumeration value="GroupSumAlarm" />
+					<s:enumeration value="GroupSumState" />
+					<s:enumeration value="GroupSO_CriticalFailure" />
+					<s:enumeration value="GroupSO_NonCriticalFailure" />
+					<s:enumeration value="GroupSO_Locking" />
+					<s:enumeration value="GroupSO_Maintenance" />
+					<s:enumeration value="GroupSO_Running" />
+					<s:enumeration value="GroupSO_RunningMode" />
+					<s:enumeration value="GroupSO_Security" />
+					<s:enumeration value="GroupSO_PreWarning_1" />
+					<s:enumeration value="GroupSO_PreWarning_2" />
+					<s:enumeration value="GroupSO_PreWarning_3" />
+					<s:enumeration value="GroupSO_MeasurementErrorFlag" />
+					<s:enumeration value="SystemInstanceSumAlarm" />
+					<s:enumeration value="SystemInstanceSumState" />
+					<s:enumeration value="SystemInstanceSO_CriticalFailure" />
+					<s:enumeration value="SystemInstanceSO_NonCriticalFailure" />
+					<s:enumeration value="SystemInstanceSO_Locking" />
+					<s:enumeration value="SystemInstanceSO_Maintenance" />
+					<s:enumeration value="SystemInstanceSO_Running" />
+					<s:enumeration value="SystemInstanceSO_RunningMode" />
+					<s:enumeration value="SystemInstanceSO_Security" />
+					<s:enumeration value="SystemInstanceSO_PreWarning_1" />
+					<s:enumeration value="SystemInstanceSO_PreWarning_2" />
+					<s:enumeration value="SystemInstanceSO_PreWarning_3" />
+					<s:enumeration value="SystemInstanceSO_MeasurementErrorFlag" />
+				</s:restriction>
+			</s:simpleType>
+			<s:simpleType name="TagFlags">
+				<s:restriction base="s:string">
+					<s:enumeration value="Valid" />
+					<s:enumeration value="NotValid" />
+					<s:enumeration value="CommunicationError" />
+					<s:enumeration value="UnInitialized" />
+				</s:restriction>
+			</s:simpleType>
+			<s:simpleType name="StandardOutputs">
+				<s:restriction base="s:string">
+					<s:enumeration value="CriticalFailure" />
+					<s:enumeration value="NonCriticalFailure" />
+					<s:enumeration value="Locking" />
+					<s:enumeration value="Maintenance" />
+					<s:enumeration value="Security" />
+					<s:enumeration value="Running" />
+					<s:enumeration value="RunningMode" />
+					<s:enumeration value="PreWarning_1" />
+					<s:enumeration value="PreWarning_2" />
+					<s:enumeration value="PreWarning_3" />
+					<s:enumeration value="Measurement_1" />
+					<s:enumeration value="Measurement_2" />
+					<s:enumeration value="Measurement_3" />
+					<s:enumeration value="Measurement_4" />
+					<s:enumeration value="Measurement_5" />
+					<s:enumeration value="MeasurementErrorFlag" />
+				</s:restriction>
+			</s:simpleType>
+			<!--<s:element name="ReportChangesResponse">
+				<s:complexType />
+			</s:element>-->
+		</s:schema>
+	</wsdl:types>
+	<wsdl:message name="ReportChangesSoapIn">
+		<wsdl:part name="parameters" element="tns:ReportChanges" />
+	</wsdl:message>
+	<wsdl:message name="ReportChangesSoapOut">
+		<wsdl:part name="parameters" element="tns:ReportChangesResponse" />
+	</wsdl:message>
+	<wsdl:portType name="CentralReportWebserviceSoap">
+		<wsdl:operation name="ReportChanges">
+			<wsdl:input message="tns:ReportChangesSoapIn" />
+			<wsdl:output message="tns:ReportChangesSoapOut" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="CentralReportWebserviceSoap" type="tns:CentralReportWebserviceSoap">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="ReportChanges">
+			<soap:operation soapAction="urn:ReportChanges" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="CentralReportWebserviceSoap12" type="tns:CentralReportWebserviceSoap">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="ReportChanges">
+			<soap:operation soapAction="urn:ReportChanges" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="CentralReportWebservice">
+		<wsdl:port name="CentralReportWebserviceSoap" binding="tns:CentralReportWebserviceSoap">
+			<!--<soap:address location="https://aliconnect.nl/sites/dms/api/v1/sim.acsm/CentralReportWebservice.php"/>-->
+			<soap:address location="http://localhost/aim/v1/api/soapserver.php"/>
+		</wsdl:port>
+		<wsdl:port name="CentralReportWebserviceSoap12" binding="tns:CentralReportWebserviceSoap12">
+			<!--<soap12:address location="https://aliconnect.nl/sites/dms/api/v1/sim.acsm/CentralReportWebservice.php"/>-->
+      <soap12:address location="http://localhost/aim/v1/api/soapserver.php"/>
+    </wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

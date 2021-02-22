@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html lang="nl-NL" class="app">
+<head>
+	<title>Object Manager</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="manifest" href="manifest.json" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/icon.css" />
+	<link rel="stylesheet" href="css/page.css" />
+	<link rel="stylesheet" href="css/app.css" />
+	<link rel="stylesheet" href="css/om.css" />
+	<link rel="stylesheet" href="css/theme/aliconnect.css" />
+	<script type="text/javascript" charset="UTF-8" src="js/main.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="js/config/default.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="js/app.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="js/alert.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="js/om.js"></script>
+</head>
+<body class="col aim om dark">
+	<div id="ckeTop" style="display:none;"></div>
+	<div id="navtop" class="row top bar topbtns btnbar noselect np"></div>
+	<div class="row aco">
+		<nav id="navleft" class="col aco noselect np"></nav>
+		<div class="seperator noselect"></div>
+		<nav id="navtree" class="col aco atv noselect np" open="1"></nav>
+		<div class="noselect seperator noselect"></div>
+		<div class="col aco main printcol">
+			<nav id="collist" view="rows" class="col aco alv"></nav>
+			<div id="alertpanel" class="row alerts"></div>
+		</div>
+		<!--<nav id="colboard" class="col aco abv oa lo noselect"></nav>-->
+		<div right class="noselect seperator noselect"></div>
+		<div id="colpage" class="col aco apv printcol"></div>
+		<div id="colinfo" class="col ainf"></div>
+		<div id="colpanel"></div>
+	</div>
+	<iframe id="baseframe" name="baseframe" class="col " style="display:none;"></iframe>
+	<div id="popupmessage"></div>
+</body>
+</html>

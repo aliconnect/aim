@@ -1,0 +1,170 @@
+﻿@font-face {
+    font-family: 'Segoe UI Light';
+    font-weight: 300;
+    src: local("Segoe UI Semilight"), local("Segoe UI"), local("segoeuil");
+	src: url("../../lib/css/fonts/segoeuil.ttf");
+}
+
+@font-face {
+    font-family: 'Segoe UI';
+    font-weight: 300;
+    src: local("Segoe UI Semilight"), local("Segoe UI"), local("segoeui");
+	src: url("../../lib/css/fonts/segoeui.ttf");
+}
+
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    position: relative;
+}
+
+html,body{
+    padding:0;margin:0;
+}
+body[wait]:not([wait="0"]) form{display:none;}
+
+label, input {
+    display: block;
+    width: 100%;
+    line-height: 30px;
+}
+
+input {
+    line-height: 36px;
+    border: none;
+    border-bottom: solid 1px #999;
+    outline: none;
+}
+
+
+.button {
+     border:none;
+     font: inherit;
+     cursor: pointer;
+    float: right;
+    display: inline-block;
+    background-color: rgb(53,157,194);
+    color: white;
+    padding: 10px 20px;
+    margin:0 5px;
+}
+
+    .button:focus {
+        outline: solid 2px black;
+    }
+
+img {
+    max-height: 30px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-family: "Segoe UI Light", "Segoe WP", sans-serif, Tahoma, Arial;
+    font-size: 16pt;
+    color:rgb(53,157,194);
+}
+
+body.auth {
+    font-family: "Segoe UI Webfont", "Segoe WP", sans-serif, Tahoma, Arial;
+    background: white;
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    font-size: 10pt;
+}
+
+    body.auth::before {
+        content: '';
+        display: block;
+        position: fixed;
+        height: 47%;
+        width: 100%;
+        background: white url('../img/bg.png') top no-repeat;
+        background-size: cover;
+    }
+
+    body.auth > div {
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+        body.auth > div > .panel {
+            background: white;
+            margin: auto;
+            padding: 44px;
+            max-width: 440px;
+            width: calc(100% - 40px);
+            max-height: 500px;
+            -webkit-box-shadow: 0 10px 30px rgba(0,0,0,.3);
+            -moz-box-shadow: 0 10px 30px rgba(0,0,0,.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,.3);
+        }
+
+            body.auth > div > .panel form {
+                padding-bottom: 40px;
+            }
+
+                body.auth > div > .panel form > div {
+                    margin: 20px 0;
+                }
+
+a:not(:hover) {
+    text-decoration: none;
+}
+
+.header {
+    position: fixed;
+    font-family: "Segoe UI Light", "Segoe WP", sans-serif, Tahoma, Arial;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    max-width: 1200px;
+    line-height: 30px;
+    text-align: right;
+    font-size: 12pt;
+    color: white;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    text-align: right;
+    color: white;
+    font-size: 10pt;
+    padding: 5px 0;
+    width: 100%;
+    overflow: visible;
+    z-index: 99;
+    clear: both;
+    background-color: rgb(53,157,194);
+}
+
+    .footer > * {
+        margin: 0 10px;
+    }
+
+    .footer a {
+        color: inherit;
+    }
+.statusbar:not(:empty) {
+	position: fixed;
+	line-height: 22px;
+	bottom: 0;
+	left: 0;
+	z-index: 100;
+	max-width: 60%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	background: #fafafa;
+	color: #666;
+	border-top: solid 1px #ccc;
+	border-right: solid 1px #ccc;
+	font-size: 9pt;
+	border-top-right-radius: 5px;
+	min-width: 400px;
+	padding: 0 3px;
+}

@@ -1,0 +1,3 @@
+﻿#colpage:not(:empty) + #collist {
+	display: none;
+}

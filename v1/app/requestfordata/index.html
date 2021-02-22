@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html class="app" lang="nl">
+<head>
+	<title>AIM Data Request</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<link href="css/doc.css" rel="stylesheet" />
+	<script type="text/javascript" charset="UTF-8" src="/aim/v1/api/js?host&local=api&client_id=3672A407-D269-4EDE-A934-C14393EDF810"></script>
+</head>
+<body>
+	<form>
+		<table>
+			<tr><td>Voornaam</td><td><input name="FirstName" /></td></tr>
+			<tr><td>Tussenvoegsel</td><td><input name="MiddleName" /></td></tr>
+			<tr><td>Achternaam</td><td><input name="LastName" /></td></tr>
+		</table>
+		<button type="button" onclick="Aim.requestfordata({ scope: 'FirstName MiddleName LastName' })">Vraag om gegevens</button>
+	</form>
+	<div id="aimStatusMsg"></div>
+</body>
+</html>

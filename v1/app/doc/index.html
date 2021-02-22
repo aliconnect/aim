@@ -1,0 +1,380 @@
+﻿<!DOCTYPE html>
+<html class="app" lang="nl">
+<head>
+	<title>AIM Documentation</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<link rel="stylesheet" href="/aim/v1/lib/css/app.css" />
+	<link rel="stylesheet" href="/aim/v1/lib/css/document.css" />
+	<link rel="stylesheet" href="/aim/v1/lib/css/theme/aliconnect.css" />
+	<link href="css/doc.css" rel="stylesheet" />
+	<script type="text/javascript" charset="UTF-8" src="/aim/v1/api/js?host&local=api&application_id=154ccc0d-b495-4766-874c-07e1b6fdbd3d"></script>
+	<script type="text/javascript" charset="UTF-8" src="/aim/v1/lib/js/config/default.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/aim/v1/lib/js/app.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/aim/v1/lib/js/doc.js"></script>
+	<script src="js/content.js"></script>
+</head>
+<body class="inner">
+	<div class="row top fixed">
+		<div class="Row btnBar inner" id="btnBar">
+			<span>Aliconnect</span>
+		</div>
+	</div>
+	<div id="responsepanel"></div>
+	<div class="mc-sidebar-left mc-menu">
+		<div><b class="ac-header">Documents</b></div>
+		<ul id="indexLeft"></ul>
+	</div>
+	<div class="mc-sidebar-right mc-menu">
+		<ul id="index"></ul>
+	</div>
+	<div id="content" class="doc-content">
+		<h1>Introduction</h1>
+		<h2>Authentication</h2>
+		<h3>Cookie</h3>
+		<form id="get_cookie">
+			<script>
+				get_cookie.appendTag('p', { innerText: Aim.settings.cookie?'U heeft het gebruik van cookies geaccepteerd':'U dient de cookies te accepteren als u verder wilt gaan. U zult ook moeten inloggen en daarme accepteerd u de cookie voorwaarden. U kunt de pagina verversen en zult zien dat het accepteren van cookies is verwerkt.' });
+			</script>
+			<p>Aliconnect verdient geen geld aan het verkopen van data. Alle informatie op Aliconnect is van de rechtmatige eigenaar. U heeft volledig controle over de gegevens die u wilt opslaan en delen met anderen.</p>
+		</form>
+		<script>
+		</script>
+
+		<h3>User</h3>
+		<p>Dit is uw persoonlijk account op Aliconnect.</p>
+		<form id="get_user">
+			<div class="row">
+				<div><label>id</label><input class="code" name="id" style="width:100%;" /></div>
+				<div><label>uid</label><input class="code" name="uid" style="width:100%;" /></div>
+				<div class="aco"><label>Name</label><input class="code" name="name" style="width:100%;" /></div>
+			</div>
+			<script>
+				get_user.appendTag('p', { innerText: Aim.client.user.id ? 'U bent aangemeld.' : 'Wilt u gebruik maken van het platform dan heeft u een account nodig. U kunt ziach aanmelden of een account aanmaken via onderstaande link.' });
+
+				get_user.appendTag('p').appendTag('a', { innerText: 'Login op Aliconnect', href: '/app/auth/?response_type=code&client_id=' + Aim.access_token + '&redirect_uri=' + encodeURIComponent(document.location.href) + '&prompt=login' });
+			</script>
+		</form>
+		<script>
+			if (Aim.client.user.id) {
+				get_user.id.value = Aim.client.user.id;
+				get_user.uid.value = Aim.client.user.uid;
+				get_user.name.value = Aim.client.user.name;
+			}
+		</script>
+
+
+		<h3>Cliënt</h3>
+		<p>Dit is de eigenaar van het huidige domein.</p>
+		<form id="get_client">
+			<div class="row">
+				<div><label>id</label><input class="code" name="id" style="width:100%;" /></div>
+				<div><label>uid</label><input class="code" name="uid" style="width:100%;" /></div>
+				<div class="aco"><label>Name</label><input class="code" name="name" style="width:100%;" /></div>
+			</div>
+		</form>
+		<script>
+			get_client.id.value = Aim.client.client.id;
+			get_client.uid.value = Aim.client.client.uid;
+			get_client.name.value = Aim.client.client.name;
+		</script>
+
+		<h3>Domain</h3>
+		<p>Dit is de domein waar u momenteel op actief bent. U kunt gegevens delen met dit domein maar ook gegevens bekijken als u daar rechten voor heeft. Het domein wordt beheerd door de cliënt.</p>
+		<form id="get_domain">
+			<div class="row">
+				<div><label>id</label><input class="code" name="id" style="width:100%;" /></div>
+				<div><label>uid</label><input class="code" name="uid" style="width:100%;" /></div>
+				<div class="aco"><label>Name</label><input class="code" name="name" style="width:100%;" /></div>
+			</div>
+			<button name="submit" type="submit">Create host</button>
+			<button name="toon" type="button">Toon gegevens</button>
+			<button name="reserveer" type="button" disabled>Reserveer</button>
+		</form>
+		<script>
+			get_domain.id.value = Aim.client.domain.id;
+			get_domain.uid.value = Aim.client.domain.uid;
+			get_domain.name.value = Aim.client.domain.name;
+
+			get_domain.toon.onclick = function () {
+				Aim.load({
+					api: "host", get: $a(this.form).getValues(), onload: function (event) {
+						console.log('SUBMIT', this, event.data);
+						for (var name in event.data) if (this[name]) this[name].value = event.data[name];
+						this.reserveer.disabled = event.data.userID;
+					}.bind(this.form)
+				});
+			}
+			get_domain.reserveer.onclick = function () {
+				Aim.load({
+					api: "host", get: $a(this.form).getValues(), onload: function (event) {
+						console.log('SUBMIT', this, event.data);
+						for (var name in event.data) if (this[name]) this[name].value = event.data[name];
+					}.bind(this.form)
+				});
+			}
+			get_domain.onsubmit = function (event) {
+				event.preventDefault();
+				Aim.load({
+					api: "client", method: 'post', data: $a(this).getValues(), onload: function (event) {
+						console.log('SUBMIT', this.data);
+						get_client.client_id.value = this.data.uid;
+						get_client.client_secret.value = this.data.secret;
+					}
+				});
+				//return false;
+			}
+		</script>
+
+		<h3>Account</h3>
+		<p>Dit is uw account op het bovenstaande domein.</p>
+		<form id="get_account">
+			<div class="row">
+				<div><label>id</label><input class="code" name="id" style="width:100%;" /></div>
+				<div class="aco"><label>uid</label><input class="code" name="uid" style="width:100%;" /></div>
+			</div>
+			<p>User scope: Tot onderstaande informatie heeft het domein toegang tot gegevens van u als gebruiker.</p>
+			<input class="code" name="user_scope" style="width:100%;" />
+			<p>Domain scope: Tot onderstaande informatie heeft u toegang op het huidige domein.</p>
+			<input class="code" name="domain_scope" style="width:100%;" />
+		</form>
+		<script>
+			if (Aim.client.account.id) {
+				get_account.id.value = Aim.client.account.id;
+				get_account.uid.value = Aim.client.account.uid;
+				get_account.user_scope.value = JSON.stringify(Aim.client.user.scope);
+				get_account.domain_scope.value = JSON.stringify(Aim.client.domain.scope);
+			}
+		</script>
+
+
+		<h3>Applicatie</h3>
+		<p>Dit is de actieve applicatie. In dit geval is dit de Aliconnect documentatie applicatie. Ieder applicatie is uniek geidentificeerd. Eenzelfde applicatie kan gebruikt worden op meerdere domeinen.</p>
+		<form id="get_application">
+			<div class="row">
+				<div><label>id</label><input class="code" name="id" style="width:100%;" /></div>
+				<div><label>uid</label><input class="code" name="uid" style="width:100%;" /></div>
+				<div class="aco"><label>Name</label><input class="code" name="name" style="width:100%;" /></div>
+			</div>
+			<button type="submit">Create application_id</button>
+		</form>
+		<script>
+			get_application.id.value = Aim.client.application.id;
+			get_application.uid.value = Aim.client.application.uid;
+			get_application.name.value = Aim.client.application.name;
+
+			get_application.onsubmit = function (event) {
+				event.preventDefault();
+				Aim.load({
+					api: "client", method: 'post', data: $a(this).getValues(), onload: function (event) {
+						console.log('SUBMIT', this.data);
+						get_client.client_id.value = this.data.uid;
+						get_client.client_secret.value = this.data.secret;
+					}
+				});
+				//return false;
+			}
+		</script>
+
+		<h4>Device</h4>
+		<p>Dit is de identificatie van het apparaat waar u nu op werkt. Deze identifier is alleen beschikbaar als u cookies heeft geaccepteerd.</p>
+		<form id="get_device">
+			<div class="row">
+				<div><label>id</label><input class="code" name="id" style="width:100%;" /></div>
+				<div class="aco"><label>uid</label><input class="code" name="uid" style="width:100%;" /></div>
+			</div>
+		</form>
+		<script>
+			get_device.id.value = Aim.client.device.id||'';
+			get_device.uid.value = Aim.client.device.uid || '';
+		</script>
+
+		<h4>Socket</h4>
+		<p>Dit is de socket identificatie waarmee uw huidige sessie actief communiceerd met andere systemen.</p>
+		<form id="get_socket">
+			<div class="row">
+				<div class="aco"><label>id</label><input class="code" name="id" style="width:100%;" /></div>
+			</div>
+		</form>
+		<script>
+			Aim.assign({
+				on: {
+					connect: function () {
+						get_socket.id.value = Aim.client.socket.id;
+					}
+				}
+			})
+		</script>
+
+
+		<h4>Get access_token</h4>
+		<form id="get_access_token">
+			<div><label>Payload JSON string</label><textarea class="code" name="payload" style="width:100%;" rows="5"></textarea></div>
+			<div><label>Secret</label><input class="code" name="secret" style="width:100%;" /></div>
+			<button type="submit">Get access_token</button>
+		</form>
+
+		<h4>Get access from token</h4>
+		<form id="get_access">
+			<div><label>access_token</label><input class="code" name="token" style="width:100%;" /></div>
+			<div><label>Secret</label><input class="code" name="secret" style="width:100%;" /></div>
+			<div><label>Header</label><input class="code" name="header" style="width:100%;" /></div>
+			<div><label>Payload</label><textarea class="code" name="payload" style="width:100%;" rows="3"></textarea></div>
+			<div><label>Signature</label><input class="code" name="signature" style="width:100%;" /></div>
+			<div><label>Valid</label><input class="code" name="valid" style="width:100%;" /></div>
+			<button type="submit">Check access_token validation</button>
+		</form>
+		<script>
+			get_access_token.payload.innerHTML = JSON.stringify(Aim.client);
+			get_access_token.onsubmit = function (event) {
+				event.preventDefault();
+				Aim.load({
+					api: "connect/jwt_encode()", post: { payload: get_access_token.payload.value, secret: get_access_token.secret.value }, onload: function (event) {
+						console.log('SUBMIT', this.get, this.src, this.responseText, this.data);
+						get_access.token.value = this.data;
+						get_access.secret.value = get_access_token.secret.value;
+						get_access.token.onchange.call(get_access, event);
+					}
+				});
+				//return false;
+			}
+			get_access.token.onchange = get_access.onsubmit = function (event) {
+				event.preventDefault();
+				get_access.header.value = atob(get_access.token.value.split('.')[0]);
+				get_access.payload.value = atob(get_access.token.value.split('.')[1]);
+				get_access.signature.value = get_access.token.value.split('.')[2];
+				Aim.load({
+					api: "connect/jwt_decode()", post: { token: get_access.token.value, secret: get_access.secret.value }, onload: function (event) {
+						console.log(this.data);
+						get_access.valid.value = this.data.valid;
+					}
+				});
+				//return false;
+			}
+		</script>
+
+		<table>
+			<tr><td>aim.access_token</td><td><code id="access_token" style="overflow:auto;width:800px;"></code></td></tr>
+			<tr><td>header</td><td><code id="jwt_header"></code></td></tr>
+			<tr><td>payload</td><td><code id="jwt_payload"></code></td></tr>
+			<tr><td>signature</td><td><code id="jwt_signature"></code></td></tr>
+		</table>
+
+		<ul>
+			<li id="access">
+			</li>
+			<li>
+				<a href="http://localhost/sample/connect/php/?item">PHP CONNECT EXAMPLE</a>
+			</li>
+			<li>
+				<a href="https://aliconnect.nl/aim/v1/api/mse/?href">MSE HREF LOGIN</a>
+				<p>Onthoud mijn gegevens..., login met google, github, facebook, linkedin, microsoft</p>
+			</li>
+			<li>
+				<a href="https://dashboard.messagebird.com/nl/login#">DESHBORD SMS MESSAGE BIRD</a>
+			</li>
+			<li>
+				<a href="https://atom.io/packages/remote-sync">ATOM PACKAGE remote-Sync</a>
+			</li>
+			<li>
+				<a href="https://github.com/aliconnect/">GITHUB Aliconnect</a>
+			</li>
+			<li>
+				<a href="https://desktop.github.com/">GITHUB Desktop for windows install</a>
+			</li>
+			<li>
+				<a href="https://atom.io/">ATOM Download</a>
+				<a href="https://alicon.aliconnect.nl/">Website Alicon</a>
+			</li>
+			<li>
+				<a href="https://www.odata.org/getting-started/understand-odata-in-6-steps/">Understanding OData in 6 steps</a>
+			</li>
+			<li>
+				<a href="https://www.odata.org/getting-started/basic-tutorial/">OData Basic tutorial</a>
+			</li>
+			<li>
+				<a href="https://aaronparecki.com/oauth-2-simplified/#authorization">OAuth Simplified</a>
+			</li>
+			<li>
+				<a href="https://en.wikipedia.org/wiki/JSON_Web_Token">JSON Web Token JWT Wiki</a>
+			<li>
+				<a href="http://calebb.net/">JWT Decoder</a>
+			</li>
+		</ul>
+		<script>
+			document.getElementById('access_token').innerText = Aim.access_token;
+			var a = Aim.access_token.split('.');
+			document.getElementById('jwt_header').innerText = JSON.stringify(JSON.parse(atob(a.shift())), null, 2);
+			document.getElementById('jwt_payload').innerText = JSON.stringify(payload = JSON.parse(atob(a.shift())), null, 2);
+			document.getElementById('jwt_signature').innerText = a.shift();
+			(checkAccess = function () {
+				with (document.getElementById('access').appendTag('ol')) {
+					appendTag('li', { innerText: 'Welkom op ' + document.location.origin + '. Domein van ' + Aim.hostName + '.' });
+					if (!payload.userID) return appendTag('li', { innerText: 'Je bent niet ingelogt op Aliconnect of hebt nog geen account. ' }).appendTag('a', { innerText: 'Login op Aliconnect', href: '/app/auth/?response_type=code&client_id=' + Aim.access_token + '&redirect_uri=' + encodeURIComponent(document.location.href) + '&prompt=login' });
+					appendTag('li', { innerText: 'Je bent nu ingelogt op Aliconnect.' });
+
+					if (!payload.accountID) appendTag('li', { innerText: 'Je hebt nog geen account op dit domein.' }).appendTag('a', { innerText: 'Ik wil toegang tot idt domein als gast', href: '/app/auth/?response_type=code&client_id=' + Aim.access_token + '&redirect_uri=' + encodeURIComponent(document.location.href) + '&prompt=login' });
+					else appendTag('li', { innerText: 'Je hebt een account op ' + document.location.origin + '.' });
+					if (!payload.EmailAddress) return appendTag('li', { innerText: Aim.title + ' heeft nog geen toegang tot je email adres. ' }).appendTag('a', { innerText: 'Ik wil toegang geven tot mijn email adres', href: '/app/auth/?response_type=code&client_id=' + Aim.access_token + '&redirect_uri=' + encodeURIComponent(document.location.href) + '&prompt=login&scope=email' });
+					appendTag('li', { innerText: Aim.title + ' heeft toegang tot je email adres.' });
+				}
+			})();
+
+			//if (!payload.userID) document.getElementById('access').appendTag('p', { innerText: 'Je bent niet ingelogt op Aliconnect.' }).appendTag('a', { innerText: 'Login', href: '/app/auth/?response_type=code&client_id=' + Aim.access_token + '&redirect_uri=' + encodeURIComponent(document.location.href) + '&prompt=login' });
+		</script>
+		<h2>Query selectors</h2>
+		<table class="code">
+			<tr><td><code>and</code></td><td>Logical And (used to combine multiple criteria)</td><td><code>TotalCount gt 0 and ChildFolderCount eq 0</code></td></tr>
+			<tr><td><code>or</code></td><td>Logical Or (used to combine multiple criteria)</td><td><code>TotalCount gt 0 or ChildFolderCount eq 0</code></td></tr>
+			<tr><td><code>eq</code></td><td>Equals</td><td><code>IsRead eq false</code></td></tr>
+			<tr><td><code>ne</code></td><td>Not equals</td><td><code>Importance ne 'High'</code></td></tr>
+			<tr><td><code>gt</code></td><td>Greater than</td><td><code>ReceivedDateTime gt 2014-09-01T00:00:00Z</code></td></tr>
+			<tr><td><code>ge</code></td><td>Greater than or equal</td><td><code>LastModifiedDateTime ge 2014-09-01T00:00:00Z</code></td></tr>
+			<tr><td><code>lt</code></td><td>Less than</td><td><code>ReceivedDateTime lt 2014-09-01T00:00:00Z</code></td></tr>
+			<tr><td><code>le</code></td><td>Less than or equal</td><td><code>LastModifiedDateTime le 2014-09-01T00:00:00Z</code></td></tr>
+		</table>
+		<pre>
+			Attachment	Searches for the specified attachment by title.
+			Bcc	Searches the Bcc field.
+			Body or Content	Searches the Body field. Only supported with default searches.
+			Category	Searches the Category field.
+			Cc	Searches the Cc field.
+			From	Searches the From field.
+			Has	Searches the HasAttachments field.
+			Participants	Searches the To, Cc, and Bcc fields.
+			Received	Searches the Received field for a specific date expressed as MM/DD/YYYY.
+			Sender	Searches the Sender field.
+			Subject	Searches the Subject field.
+			To	Searches the To field.
+		</pre>
+		<p>Folder indeling: js, css: voor style sheet, css/fonts: voor fonts, css/img: voor style sheet images, img: voor applicatie images, api: voor php code, </p>
+		<p>Header keys are (in the aliconnect api) case-insensitive and lowercase: header values are case-sensitive</p>
+		<p>In PHP zijn classes en functions case-insensitive. Daarom zijn classes in Aliconnect ook case-<u>in</u>sensitive. In JS zijn functies case-sensitive. Variables (Properties/Attributes) are case-sensitive.</p>
+		<h1>Shop</h1>
+		<p><a onclick="Aim.Shop.payform();">Payform</a></p>
+
+		net User MaxVanKampen password /fullname:"Max van Kampen" /passwordchg:no /add
+
+
+
+		<p></p>
+		<script>
+			Doc.createIndex();
+
+		</script>
+	</div>
+	<!--<h1>MSE</h1>-->
+	<!--<p><button onclick="Aim.load({ api: 'sms/send', get: { originator: sms_originator.value, recipients: sms_recipients.value, body: sms_body.value }, onload: function () { console.log(this.data); } }); return false;">Send SMS</button></p>-->
+	<!--<h1>SMS</h1>
+	<table>
+		<tr><td>originator</td><td><input id="sms_originator" value="Aliconnect" maxlength="11" /></td></tr>
+		<tr><td>recipients</td><td><input id="sms_recipients" value="+31620068073" /></td></tr>
+		<tr><td>body</td><td><textarea id="sms_body" style="width:250px;height:100px;">This message is generated bij the Aliconnect tutorial</textarea></td></tr>
+	</table>
+	<button onclick="Aim.load({ api: 'sms/send', get: { originator: sms_originator.value, recipients: sms_recipients.value, body: sms_body.value }, onload: function () { console.log(this.data); } }); return false;">Send SMS</button>-->
+</body>
+</html>
