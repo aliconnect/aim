@@ -927,7 +927,28 @@
 				L_stamien: {}
 			},
 		},
-		Device: {
+    Device: {
+			className: "device",
+			header: [
+				['Product'], // title = titel
+				['IPAddress','Port'], // subject = onderwerp
+				['ReadAddress','ReadLength','Community'], // summary = beschrijving / samenvatting
+			],
+			treeTitleAttributeName: 'Product',
+			attributes: {
+				Product: { label: "Device", placeholder: "Name", idname: "name" },
+
+				IPAddress: { label: "Network", placeholder: "IP address" },
+				Port: { placeholder: "Port" },
+				PollInterval: { placeholder: "Poll Interval", type: "number", unit: "ms" },
+
+				ReadAddress: { label: "Modbus", placeholder: "Read Address" },
+				ReadLength: { placeholder: "Read Length" },
+
+				Community: { label: "SNMP", placeholder: "Community" },
+			},
+		},
+    Control: {
 			className: "device",
 			header: [
 				['Product'], // title = titel

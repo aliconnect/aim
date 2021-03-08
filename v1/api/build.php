@@ -23,41 +23,56 @@ $get=(object)$_GET;
 if(isset($_POST[submit_file])){
 	$content=json_decode(file_get_contents($_FILES["fileImport"]["tmp_name"]));
 	//query("USE aim");
-	$path=$_SERVER[DOCUMENT_ROOT]."/sites/$get->host/app/v1";
+	$path=$_SERVER[DOCUMENT_ROOT]."/sites/".$_GET['folder']."/app/v1";
 	$config=json_decode(file_get_contents($configFilename="$path/config.json"));
+
+
+
 	$config->client->system->id=$content->rootID;
 	$config->client->system->uid=$content->items->{$content->rootID}->uid;
-	foreach($content->items as $id=>$item){
+  foreach($content->items as $id=>$item){
 		if($item->masterID==$content->rootID && $item->classID==1008) {
 			$config->client->device->id=$id;
 			$config->client->device->uid=$item->uid;
 			break;
 		}
 	}
+  $addDetailItems = '';
+  foreach($content->items as $id => $item){
+    if ($link = $item->values->link) {
+      $addDetailItems .= "\r\nINSERT om.items(masterId,detailId,idx,userId,hostId)VALUES($id,$link->itemID,0,0,$item->hostID);";
+    }
+	}
+  // die($addDetailItems);
+  // die('aa');
+
+
+
+
 	file_put_contents($configFilename,stripslashes(json_encode($config,JSON_PRETTY_PRINT)));
+
+  // die(json_encode([$configFilename, $config]));
+
 	file_put_contents("$path/config.bat",'SET id='.$config->client->system->id.PHP_EOL.'SET uid='.$config->client->system->uid.PHP_EOL.'SET root="\aim\www"');
 
 	echo "<div>Host: <b>".$aim->host."</b> <b>".$content->hostID."</b></div>";
 	echo "<div>System: <b>".$config->client->system->id."</b>, <b>".$config->client->system->uid."</b></div>";
 	echo "<div>Device: <b>".$config->client->device->id."</b>, <b>".$config->client->device->uid."</b></div>";
-
 	echo "<br><a href='/$aim->host/app/auth/?redirect_uri=/$aim->host/app/oml/' target='oml'>Aanmelden</a>";
 	//die($quser);
-
 	require_once (__DIR__."/connect.php");
 	query($sql.="DISABLE TRIGGER ALL ON om.items;DISABLE TRIGGER ALL ON om.attributes;");
-
 	$q.="SET DATEFORMAT YMD;DELETE om.attributes;DELETE om.freeid;DELETE om.items;DELETE om.attributeName;";
-
 	$q.="SET IDENTITY_INSERT om.items OFF;SET IDENTITY_INSERT om.attributeName OFF;SET IDENTITY_INSERT om.attributeName ON;";
-	foreach($content->attributeName as $id=>$value)$q.="\r\nIF NOT EXISTS(SELECT 0 FROM om.attributeName WHERE id=$id)INSERT om.attributeName(id,name)VALUES($id,'$value');";
+	foreach($content->attributeName as $id=>$value){
+    $q.="\r\nIF NOT EXISTS(SELECT 0 FROM om.attributeName WHERE id=$id)INSERT om.attributeName(id,name)VALUES($id,'$value');";
+  }
 	$q.="SET IDENTITY_INSERT om.attributeName OFF;";
-
 	$q.="SET IDENTITY_INSERT om.items ON;";
-	foreach($content->class as $id=>$value)$q.="IF NOT EXISTS(SELECT 0 FROM om.items WHERE id=$id)INSERT om.items(id,classID,hostID,masterID,srcID,name)VALUES($id,0,0,0,0,'$value');";
+	foreach($content->class as $id=>$value){
+    $q.="IF NOT EXISTS(SELECT 0 FROM om.items WHERE id=$id)INSERT om.items(id,classID,hostID,masterID,srcID,name)VALUES($id,0,0,0,0,'$value');";
+  }
 	$q.="SET IDENTITY_INSERT om.items OFF;";
-
-
 	if($content->items){
 		//foreach($content->items as $id=>$item) $q.="DELETE om.attributes WHERE id=$id;DELETE om.freeid WHERE id=$id;DELETE om.items WHERE id=$id;";
 		foreach($content->items as $id=>$item){
@@ -66,49 +81,33 @@ if(isset($_POST[submit_file])){
 			//if($item->classID==4133)
 			foreach($item->values as $attributeName=>$attribute){
 				//err($attribute);
-
-
 				foreach($attribute as $key=>$value)if(is_object($value))$attribute->$key=json_encode($value);
-
 				//$attribute=(array)$attribute;
 				//array_walk($attribute,function(&$row){ $row=str_replace("'","''",$row);});
 				//$qa.="INSERT om.attributes(".implode(",",array_keys($attribute)).")VALUES('".  implode("','",array_values($attribute))   ."');";
-
-
-
 				//unset($attribute->values,$attribute->activeCnt);
 				//$attribute=(array)$attribute;
 				//err($attribute);
-
-
 				$qa.="INSERT om.attributes(".implode(",",array_keys((array)$attribute)).")VALUES(".implode(",",array_values_sql($attribute)).");";
-
-
 				//die($qa);
 			}
 			unset($item->values,$item->itemID,$item->indexDT,$item->itemConfig,$item->location);
-
-
 			//foreach($item as $key=>$value)$item->$key=str_replace("'","''",is_object($value)?json_encode($value):$value);
-
 			//err($item);
-
-
-			if(count((array)$item))$qi.="\r\nINSERT om.items(id,".implode(",",array_keys((array)$item)).")VALUES($id,".implode(",",array_values_sql($item)).");";
-
+			if(count((array)$item)){
+        $qi.="\r\nINSERT om.items(id,".implode(",",array_keys((array)$item)).")VALUES($id,".implode(",",array_values_sql($item)).");";
+      }
 			//die($qi);
-
 			//if(count((array)$item))$qi.="\r\nINSERT om.items(id,".implode(",",array_keys((array)$item)).")VALUES($id,".implode(",",function($val){return is_null($val)?"NULL":"'$val'";},array_values((array)$item))).");";
 		}
 		$q.="SET IDENTITY_INSERT om.attributes OFF;SET IDENTITY_INSERT om.items OFF;SET IDENTITY_INSERT om.items ON;$qi;SET IDENTITY_INSERT om.items OFF;SET IDENTITY_INSERT om.attributes OFF;SET IDENTITY_INSERT om.attributes ON;$qa;SET IDENTITY_INSERT om.attributes OFF;";
+    $q.=$addDetailItems;
 	}
 	query($sql.="ENABLE TRIGGER ALL ON om.items;ENABLE TRIGGER ALL ON om.attributes;");
 	$q=str_replace(";",";\r\n",$q);
 	$q=str_replace("\r\n\r\n","\r\n",$q);
 	$q=str_replace("0000Z","Z",$q);
 	file_put_contents(__DIR__."/sql/aim.import.sql","USE aim\r\nGO\r\n".$q);
-
-
 	//$row=fetch_object(query("EXEC api.getAccount @select=1, @hostName='$aim->host', @email='$aim->host@aliconnect.nl'"));
 	//if (!$row->userId){
 	//    $password=getPassword();
@@ -119,21 +118,13 @@ if(isset($_POST[submit_file])){
 	//    //echo "<br>$q<br>";
 	//    echo"<div>AccountName: <b>$aim->host@aliconnect.nl</b><br>AccountPassword: <b>$password</b></div><br>";
 	//}
-
 	$password="Welkom1234!";
 	$q.="EXEC api.setAccount @select=1, @hostName='$aim->host', @email='$aim->host@aliconnect.nl', @password='$password', @userName='$aim->host Admin', @groupName='Admin', @userID=800, @accountID=801, @groupID=802, @userUID='718e9b30-72e7-4bcd-a35f-3c3a2c3b247e';";
 	echo"<div>AccountName: <b>$aim->host@aliconnect.nl</b><br>AccountPassword: <b>$password</b></div><br>";
-
 	$q.="delete om.attributes where fieldid in (1738,2007,2006,2004,1921,1920,1919,1918,1917,1916,1915,1914,1890,1891,1898)";
-
 	querysql($q);
 	echo "<div>Total Items: <b>".$row=fetch_object($res=query("SELECT COUNT(0) AS cnt FROM om.items"))->cnt."</b></div>";
 	echo "<div>Total Attributes: <b>".$row=fetch_object($res=query("SELECT COUNT(0) AS cnt FROM om.attributes"))->cnt."</b></div>";
-
-
-
-
-
 	die();
 }
 
@@ -150,11 +141,14 @@ class build {
 		//if($_SERVER[SERVER_NAME]=="aliconnect.nl" || $dbs->server=="aliconnect.nl")die("IMPORT ON SERVER aliconnect.nl NOT ALLOWED");
 		echo "
 		<div>SERVER=$dbs->server,HOST=$get->host</div>
-		<form method='post' enctype='multipart/form-data'>
+		<form method='post' enctype='multipart/form-data' target='build'>
 			Select aliconnect export JSON to import
 			<input type='file' name='fileImport'>
 				<input type=submit value='Import' name='submit_file'>
-		</form>";
+		</form>
+    <iframe name=build style='width:100%;height:500px;'></iframe>
+    ";
+
 
 		die();
 	}

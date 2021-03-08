@@ -339,10 +339,16 @@ const attributeChange = function (item) {
 	else if (item.children) item.children.forEach(attributeChange.bind(item));
 }
 const setState = function (item, value) {
-	if (item.State != value) setAttribute(item, 'State', value);
+
+  // if (!item) throw new Error('sdfa');
+  // console.log(item);
+
+  // MKAN item bestaat niet ???
+	if (item && item.State != value) setAttribute(item, 'State', value);
 };
 const setAttribute = function (item, attributeName, value, nochange) {
-	if (item[attributeName] === value) return;
+  // MKAN item bestaat niet ???
+	if (!item || item[attributeName] === value) return;
 	//aimdb.log('setAttribute', item.id, { [attributeName]: value, extra: [item[attributeName], typeof item[attributeName], typeof value], });
 	aimdb.log('setAttribute', item.id, { [attributeName]: value });
 	//item.values = item.values || {};
@@ -357,8 +363,11 @@ const setAttribute = function (item, attributeName, value, nochange) {
 	setItem({ id: item.id, values: { [attributeName]: { value: value } } });
 	//attributes.emit('change', item, attributeName, value);
 	//if (attributeName == 'Value' && !nochange) attributeChange.call({ inout: 'in' }, { id: item.id, [attributeName]: value, values: { [attributeName]: { value: value } } });
-
-	if (attributeName == 'Value' && !nochange && item.children) item.children.forEach(attributeChange.bind(item));
+  // MKAN
+  // console.log(attributeName, nochange, item);
+	if (attributeName == 'Value' && !nochange && item.children) {
+    item.children.forEach(attributeChange.bind(item));
+  }
 
 };
 const setItem = function (item) {
@@ -485,27 +494,59 @@ sql.connect(config.dbs, function (err) {
 				}
 			});
 			items.forEach(attributeChange);
+      // console.log('freeMemID', items);
 			//items.forEach(function (item) { if (item.schema=='ControlIO') attributeChange(item); });
 			wss_start();
 
-			setState(items[config.freeMemID], 'connect');
-			setState(items[config.freeDiskSpaceID], 'connect');
-			setState(items[config.timeSyncID], 'connect');
+      var item = items.filter(Boolean).find(item => item.name==='MEMORY_USED_SPACE');
+      if (item) {
+        setState(items[config.freeMemID = item.id], 'connect');
+        (function freeMem() {
+  				setAttribute(items[config.freeMemID], 'Value', Math.round(100 - osutils.freememPercentage() * 100));
+  				setTimeout(freeMem, config.intervalSystemAttributes);
+  			})();
+      }
+      var item = items.filter(Boolean).find(item => item.name==='HDD_USED_SPACE');
+      if (item) {
+        setState(items[config.freeDiskSpaceID = item.id], 'connect');
+        (function freeDiskSpace() {
+          checkDiskSpace('C:/').then((diskSpace) => { setAttribute(items[config.freeDiskSpaceID], 'Value', Math.round((diskSpace.size - diskSpace.free) / diskSpace.size * 100)); });
+  				setTimeout(freeDiskSpace, config.intervalSystemAttributes);
+  			})();
+      }
+      var item = items.filter(Boolean).find(item => item.name==='TIME_SYNC');
+      if (item) {
+        setState(items[config.timeSyncID = item.id], 'connect');
+        (function timeSync() {
+          cmd.get('w32tm /query /status', function (err, data, stderr) {
+  					var value = Number(data.split(/\n/).shift().split(':').pop().split('(').shift().trim());
+  					setAttribute(items[config.timeSyncID], 'Value', value);
+  					//console.log('timesync', value, data);
+  				});
+  				setTimeout(timeSync, config.intervalSystemAttributes);
+  			})();
+      }
 
-			(resourceInfo = function () {
-				setAttribute(items[config.freeMemID], 'Value', Math.round(100 - osutils.freememPercentage() * 100));
-				checkDiskSpace('C:/').then((diskSpace) => { setAttribute(items[config.freeDiskSpaceID], 'Value', Math.round((diskSpace.size - diskSpace.free) / diskSpace.size * 100)); });
-				//checkDiskSpace('C:/').then((diskSpace) => { setAttribute(items[config.freeDiskSpaceID], 'Value', 92); });
-				//TEST:MKA:190913: Uitwerken result van DOS, omzeten naar data object, PAS OP: ook nog doorvoeren in EM, hoe dit dataobject te verwerken.
-				//cmd.get('w32tm /query /status', function (err, data, stderr) { setItemValues([{ id: 3563538, values: { Value: { value: data } } }]); });
-				//cmd.get('w32tm /query /status', function (err, data, stderr) { setItemValues([{ id: 3563538, values: { Value: { value: JSON.parse('{"' + data.replace(/: [a-zA-Z0-9]/g, '":"').replace(/\n/g, '","') + '"}') } } }]); });
-				cmd.get('w32tm /query /status', function (err, data, stderr) {
-					var value = Number(data.split(/\n/).shift().split(':').pop().split('(').shift().trim());
-					setAttribute(items[config.timeSyncID], 'Value', value);
-					//console.log('timesync', value, data);
-				});
-				setTimeout(resourceInfo, config.intervalSystemAttributes);
-			})();
+      var item = items.filter(Boolean).find(item => item.name==='WATCHDOG_ACSM');
+      if (item) {
+        config.acmsHartbeatID = item.id;
+      }
+      // 2021 MKAN VERVALLEN IVM VOORGAANDE CODE
+			// (resourceInfo = function () {
+			// 	setAttribute(items[config.freeMemID], 'Value', Math.round(100 - osutils.freememPercentage() * 100));
+			// 	checkDiskSpace('C:/').then((diskSpace) => { setAttribute(items[config.freeDiskSpaceID], 'Value', Math.round((diskSpace.size - diskSpace.free) / diskSpace.size * 100)); });
+			// 	//checkDiskSpace('C:/').then((diskSpace) => { setAttribute(items[config.freeDiskSpaceID], 'Value', 92); });
+			// 	//TEST:MKA:190913: Uitwerken result van DOS, omzeten naar data object, PAS OP: ook nog doorvoeren in EM, hoe dit dataobject te verwerken.
+			// 	//cmd.get('w32tm /query /status', function (err, data, stderr) { setItemValues([{ id: 3563538, values: { Value: { value: data } } }]); });
+			// 	//cmd.get('w32tm /query /status', function (err, data, stderr) { setItemValues([{ id: 3563538, values: { Value: { value: JSON.parse('{"' + data.replace(/: [a-zA-Z0-9]/g, '":"').replace(/\n/g, '","') + '"}') } } }]); });
+			// 	cmd.get('w32tm /query /status', function (err, data, stderr) {
+			// 		var value = Number(data.split(/\n/).shift().split(':').pop().split('(').shift().trim());
+			// 		setAttribute(items[config.timeSyncID], 'Value', value);
+			// 		//console.log('timesync', value, data);
+			// 	});
+			// 	setTimeout(resourceInfo, config.intervalSystemAttributes);
+			// })();
+
 			var snmpDevices = [], modbusDevices = [], devices = [];
 			devices.connect = function () {
 				var device = devices.shift();
@@ -530,11 +571,13 @@ sql.connect(config.dbs, function (err) {
 				*/
 			//snmpDevices = [];
 			//modbusDevices = [];
+      // console.log(modbusDevices);
 			modbusDevices.forEach(function (item, i) {
 				devices.push(device = { item: item });
 				var socket = device.socket = new net.Socket();
 				device.client = new Modbus.client.TCP(device.socket, i + 1);
 				device.client.device = device.socket.device = device;
+        // console.log(item.ReadLength);
 				Object.assign(device, { ReadAddress: item.children.ReadAddress = item.ReadAddress || 0, ReadLength: item.ReadLength || 0, Registers: {} });
 				var register = {};
 				(setdevice = function (subdevice) {
@@ -545,15 +588,21 @@ sql.connect(config.dbs, function (err) {
 						child.SignalType = child.SignalType || 'UInt';
 						var ReadAddress = child.ReadAddress || child.ReadAddress || 0;
 						register = device.Registers[ReadAddress] = device.Registers[ReadAddress] || { device: device, ReadAddress: ReadAddress, ReadLength: device.ReadLength = device.ReadLength || 0, children: [], BitStart: 0, BitPos: 0 };
-						if (child.class == "Device") { child.ReadAddress = ReadAddress; subdevices.push({ item: child }); }
-						else if (child.class == "ControlIO") {
+						if (child.class == "Device") {
+              child.ReadAddress = ReadAddress; subdevices.push({ item: child });
+            } else if (child.class == "ControlIO") {
 							var control = { id: child.id, title: child.title, SignalType: child.SignalType, Deadband: child.Deadband || 0, Permission: child.Permission, BitPos: register.BitPos = Number(register.BitStart) + Number(child.ReadAddressBit || 0), BitLength: types[child.SignalType].BitLength };
 							register.ReadLength = Math.ceil((Number(register.BitPos) + Number(control.BitLength)) / 16);
 							register.children.push(control);
-						}
+						} else {
+              delete child.children;
+              console.log(child.id, child, items[1060]);
+              return;
+            }
 					});
 					subdevices.forEach(setdevice);
 				})(device);
+        // return;
 
 				/*
 				console.log('Device', 'IPAddress', item.IPAddress);
@@ -564,9 +613,10 @@ sql.connect(config.dbs, function (err) {
 					});
 				});
 				*/
-				testID = 0;//3563448;
+				testID = 0;//3682365;//0;//3563448;
 				socket.on('connect', function (event) {
 					var device = this, item = device.item;
+          // console.log(item.id);
 					if (item.id == testID) console.log('socket=connect');
 					//clearTimeout(device.toRead);
 					setState(item, 'connect');
@@ -589,7 +639,13 @@ sql.connect(config.dbs, function (err) {
 								var bitString = bitArray.join('');//value.toString(2);
 								register.children.forEach(function (control, i) {
 									var item = items[control.id], ReadValue = bitTo(control.SignalType, control.bitString = bitString.substr(bitString.length - control.BitLength - control.BitPos, control.BitLength)), OffsetValue = Math.abs(ReadValue - (item.Value || 0));
-									if (item.Value === null || item.Value === undefined || OffsetValue > control.Deadband) setAttribute(item, 'Value', ReadValue);
+                  // console.log('read',ReadValue,OffsetValue,control.Deadband);
+                  // control.Deadband = 0;
+                  // MKAN
+									if (1 || item.Value === null || item.Value === undefined || OffsetValue > control.Deadband) {
+                    // console.log('read set',ReadValue);
+                    setAttribute(item, 'Value', ReadValue);
+                  }
 								});
 							}.bind(register)).catch(function (resp) {
 								var register = this, device = register.device, item = device.item;

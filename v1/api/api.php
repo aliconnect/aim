@@ -277,7 +277,7 @@ class soap {
 
 /** @class auth */
 class auth {
-	/** @method login 
+	/** @method login
 		* Nodig voor aanmelden
 		*/
 	function login(){
@@ -799,10 +799,11 @@ class js{
 		//$aim->host1=$aim->host;
 		//$aim=array();
 		//$aim->host5='MAX';
-
+    $hostname = strtok($_SERVER['SERVER_NAME'],'.');
+    $appconfig = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT']."/sites/$hostname/app/v1/config.json"));
 
 		//$itemAccount=fetch_object(query("SELECT hostID,id,[schema],uid FROM api.citems WHERE class='Company' AND hostID=1 AND UniqueKey='$aim->host'"));
-
+    // die(strtok($_SERVER['SERVER_NAME'],'.'));
 
 		//err(api_js,$aim);
 		die("Aim=".stripslashes(json_encode(array_merge($_GET,[
@@ -813,6 +814,7 @@ class js{
 			settings=>$aim->settings,
 			userId=>$aim->userId,
 			client=>$aim->client,
+      appconfig=>$appconfig->client,
 			//account=>[Email=>$account,Name=>$account->userName],
 			//hostName=>ucfirst($aim->host),
 			origin=>$aim->origin,
