@@ -37,6 +37,8 @@ if(isset($_POST[submit_file])){
 			break;
 		}
 	}
+
+
   $addDetailItems = '';
   foreach($content->items as $id => $item){
     if ($link = $item->values->link) {
@@ -45,7 +47,6 @@ if(isset($_POST[submit_file])){
 	}
   // die($addDetailItems);
   // die('aa');
-
 
 
 

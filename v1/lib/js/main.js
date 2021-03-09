@@ -2109,7 +2109,13 @@ Aim.assign({
 
 		if (par.event = par.event || par.on) for (var name in par.event) el.addEventListener(name, par.event[name]);
 		delete par.event;
-		if (par.attr) for (var name in par.attr) if (name && par.attr[name] != undefined) el.setAttribute(name, par.attr[name]);
+		if (par.attr) {
+      for (var name in par.attr) {
+        if (name && par.attr[name] != undefined) {
+          el.setAttribute(name.replace(/\s/g,'_'), par.attr[name]);
+        }
+      }
+    }
 		delete par.attr;
 		for (var name in par) {
 			try { el[name] = par[name]; } catch (err) { }
@@ -2683,7 +2689,7 @@ Aim.assign({
 							//Aim.Alert.appendAlert({ id: 1, condition: 1, title: 'TEMP HOOG', created: new Date().toISOString(), categorie: 'Alert', ack: 0 });
 
 							if (row.attr) for (var name in row.attr) if (row.attr[name]) e.setAttribute(name, row.attr[name]); else e.removeAttribute(name);
-							//if (row.attr) for (var name in row.attr) e.setAttribute(name, row.attr[name]); 
+							//if (row.attr) for (var name in row.attr) e.setAttribute(name, row.attr[name]);
 						}
 					}
 					//END TEST

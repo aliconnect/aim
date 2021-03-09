@@ -477,6 +477,7 @@ wss_start = function () {
 sql.connect(config.dbs, function (err) {
 	if (err) console.log(err);
 	if (config.client && config.client.system) {
+    console.debug(config.client.system.id);
 		new sql.Request().query("EXEC api.getTree " + config.client.system.id, function (err, res) {
 			if (err) console.log(err);
 			rows = res.recordsets[0];
@@ -552,7 +553,12 @@ sql.connect(config.dbs, function (err) {
 				var device = devices.shift();
 				if (device) device.connect();
 			}
+      // console.log(items);
+
 			items.forEach(function (item, i) {
+
+        // console.debug(item.selected, item.IPAddress, item.PollInterval);
+
 				if (!item.selected || !item.IPAddress || !item.PollInterval) return;
 				if (item.Community) return snmpDevices.push(item);
 				/**
@@ -561,8 +567,9 @@ sql.connect(config.dbs, function (err) {
 					* @version Write the documentation.
 					* @example Alleen aanmaken modbus device met sepcifiek IP adres voor testen.
 					*/
-				//if (item.IPAddress == '192.168.2.3') modbusDevices.push(item);
-				//if (item.IPAddress == '192.168.2.5') modbusDevices.push(item);
+          // if (item.IPAddress == '192.168.2.22') modbusDevices.push(item);
+          // if (item.IPAddress == '192.168.2.3') modbusDevices.push(item);
+  				//if (item.IPAddress == '192.168.2.5') modbusDevices.push(item);
 				modbusDevices.push(item);
 			});
 			/**
@@ -595,9 +602,9 @@ sql.connect(config.dbs, function (err) {
 							register.ReadLength = Math.ceil((Number(register.BitPos) + Number(control.BitLength)) / 16);
 							register.children.push(control);
 						} else {
-              delete child.children;
-              console.log(child.id, child, items[1060]);
-              return;
+              // delete child.children;
+              // console.log(child.id, child, items[1060]);
+              // return;
             }
 					});
 					subdevices.forEach(setdevice);
@@ -637,9 +644,9 @@ sql.connect(config.dbs, function (err) {
 								device.readCount--;
 								for (var bitArray = [], byteArray = resp.response._body._valuesAsArray, i = byteArray.length - 1 ; i >= 0; i--) bitArray.push(('0000000000000000' + byteArray[i].toString(2)).substr(-16));//value = (value * 65536) + byteArray[i];
 								var bitString = bitArray.join('');//value.toString(2);
+                // console.log('read',bitString);
 								register.children.forEach(function (control, i) {
 									var item = items[control.id], ReadValue = bitTo(control.SignalType, control.bitString = bitString.substr(bitString.length - control.BitLength - control.BitPos, control.BitLength)), OffsetValue = Math.abs(ReadValue - (item.Value || 0));
-                  // console.log('read',ReadValue,OffsetValue,control.Deadband);
                   // control.Deadband = 0;
                   // MKAN
 									if (1 || item.Value === null || item.Value === undefined || OffsetValue > control.Deadband) {
