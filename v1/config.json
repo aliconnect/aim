@@ -4,50 +4,41 @@
         "port": 1433,
         "database": "aim",
         "user": "aim",
+        "password1": "qwertyuiop",
         "password": "A!mUser"
+    },
+    "client": {
+        "device": {
+            "id": "3682362",
+            "uid": "421057d5-1879-411d-b511-2bd4a6a52a51"
+        },
+        "system": {
+            "id": "3682358",
+            "uid": "0864ee54-9246-40ea-a4ff-afe2bc3b5b14"
+        }
     },
     "ws": {
         "protocol": "http",
         "hostname": "localhost",
-        "port": 80,
-        "domain": "aliconnect"
+        "hostname1": "192.168.2.202",
+        "port": 80
     },
     "wss": {
-        "hostname": "localhost",
         "protocol": "ws",
+        "hostname": "localhost",
         "port": 81
     },
-    "mqqt": {
-        "http": {
-            "port": 1883,
-            "bundle": true,
-            "static": "./"
-        },
-        "https": {
-            "port": 1884,
-            "bundle": true,
-            "static": "./"
-        },
-        "logger": {
-            "name": "aliconnectSecure",
-            "level": 40
-        }
+    "connector": {
+        "url1": "/tms/aim/v1/api/?select=*&child=4&filter=finishDT+IS+NULL&folder=",
+        "urlPut": "/sites/dms/app/system/dms/api",
+        "src": "/aim/v1/api/"
     },
-    "secure": {
-        "key": "/aim/cert/cert.key",
-        "cert": "/aim/cert/cert.cer",
-        "ca": "/aim/cert/cert.ca"
-    },
-    "mail": {
-        "SMTPSecure": "ssl",
-        "Port": "587",
-        "SMTPAuth": true,
-        "Host": "tls://smtp.office365.com",
-        "Username": "{username}",
-        "Password": "{password}"
-    },
-    "mse": {
-        "clientId": "{clientId}",
-        "clientSecret": "{clientSecret}"
-    }
+    "intervalSystemAttributes": 60000,
+    "timeWaitAfterTimeout": 60000,
+    "acmsHartbeatTimeout": 60000,
+    "_acmsHartbeatID": 3563537,
+    "acmsHartbeatMaxCount": 100,
+    "_freeMemID": 3563535,
+    "_freeDiskSpaceID": 3563536,
+    "_timeSyncID": 3563538
 }

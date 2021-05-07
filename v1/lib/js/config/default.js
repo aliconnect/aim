@@ -38,11 +38,16 @@
 						PreWarning_1: { title: "Pre warning 1", },//count
 						PreWarning_2: { title: "Pre warning 2", },//count
 						PreWarning_3: { title: "Pre warning 3", },//count
+						PreWarning_4: { title: "Pre warning 4", },//count
+						PreWarning_5: { title: "Pre warning 5", },//count
+						PreWarning_6: { title: "Pre warning 6", },//count
+						PreWarning_7: { title: "Pre warning 7", },//count
 						Measurement_1: { title: "Measurement 1", },//count
 						Measurement_2: { title: "Measurement 2", },//count
 						Measurement_3: { title: "Measurement 3", },//count
 						Measurement_4: { title: "Measurement 4", },//count
 						Measurement_5: { title: "Measurement 5", },//count
+						Measurement_6: { title: "Measurement 6", },//count
 						MeasurementErrorFlag: { title: "MeasurementErrorFlag", },//count
 						NotApplicable: { title: "Not Applicable", },
 						"": { title: "NULL", },
