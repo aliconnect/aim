@@ -1,9 +1,0 @@
-﻿{
-  "name": "Aliconnect Website",
-  "short_name": "Aliconnect",
-  "description": "Aliconnect Website.",
-  "display": "fullscreen",
-  "background_color": "#000",
-  "scope": "/",
-  "start_url": "."
-}
