@@ -1,26 +1,11 @@
 <?php
-/**
-	* @file api calls
-	* @author Max van Kampen (max.van.kampen@alicon.nl)
-	* @todo 100% odata 4.0 compliant
-	* @todo 100% odata 3.0 compliant
-	* @todo 100% odata 2.0 compliant
-	*/
 array_push($aim->loaded,__FILE__);
-//if ($aim->properties)$aim->select=$aim->properties;
 $GLOBALS[selectbasic]="uid,typical,detailID,idx,srcID,userID,ownerID,hostID,title,subject,summary,state,startDT,endDT,finishDT,files,modifiedDT,modifiedByID,lastvisitDT,geolocatie,www,hasChildren,selected,inherit,inheritedID";
 $GLOBALS[selectlist]=$GLOBALS[selectbasic].",filterfields";
 $GLOBALS[selectall]=$GLOBALS[selectbasic].",toID,fromID,keyID,keyname,tag,tagname,name,createdDT,msgCnt,filterfields";
 $GLOBALS[itemselect]=$GLOBALS[selectall].",level,schema,id,classID,masterID,uid";
-
 $GLOBALS[itemattributes]=explode(",",$GLOBALS[itemselect].",clone,users,properties,values,rel,readOnly,lastvisitDT,geolocatie,level,ID");
-
 require_once(__dir__."/lib.php");
-
-//function getID($item=null){
-//    global $aim,$aim,$location,$cookie;
-//    return strtoupper(implode('-',array(dechex($item->id),dechex($item->classID),dechex($item->hostID?:$cookie->hostID),dechex($cookie->clientaccountID),$item->uid)));
-//}
 function post($row,$add){
 	global $aim;
 	$q="DECLARE @id INT,@masterID INT,@classID INT,@idx INT";
@@ -165,15 +150,6 @@ function post($row,$add){
     return itemrow($item);
 }
 function isword($word){	return !is_numeric($word) && strlen(trim($word))>2 && !in_array($word,array(de,het,een,op,in,van,voor,bij,dit,dathttps,html,geen));}
-//function words($str){
-//    $temp = array_filter(array_unique(preg_split("/ /", preg_replace('/\[|\]|\(|\)|\+|\-|:|;|\.|,|\'|~|\/|_|=|\?|#/',' ',strtolower($str)), -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY)),'isword');
-//    return array_values($temp);
-//    //$spaces = array();
-//    //return array_reduce( $temp, function( &$result, $item) use ( &$spaces) {
-//    //    if( strlen( trim( $item)) === 0) {$spaces[] = strlen( $item);} else {$result[] = $item;}
-//    //    return $result;
-//    //}, array());
-//}
 function item($item) {
     global $aim;
     //$item->{'@data.id'}="https://aliconnect.nl/api/v2/".getID($item);
@@ -188,63 +164,9 @@ function value($value) {
     return !$value->itemID?$value->title:clean($value);
 }
 function fieldrow($row){return $row->itemID?array(value=>$row->value,itemID=>$row->itemID):$row->value;}
-
-//die($_SERVER[REQUEST_METHOD]);
-//array_push($aim->loaded,__FILE__);
 function dieform($html){
     die(str_replace("<content />",$html,file_get_contents(__DIR__."/../app/auth/index.html")));
 }
-
-
-//class test {
-//  public function getMessage($par="")
-//  {
-//    return "";
-//    //$_SESSION["cookie"] = $_COOKIE;
-//    //$_SESSION["par"] = $par;
-//    //$_SESSION["headers2"] = getallheaders();;
-//    //return json_encode($_SESSION);
-//  }
-//}
-//class item1 {
-//    //public function ReportChanges( $params ) {
-//    //    //require_once ($_SERVER['DOCUMENT_ROOT']."/aim/v1/api/connect.php");
-//    //    //query("INSERT acsm.dbo.wsdlLog(params)VALUES('".json_encode($params)."')");
-//    //    //file_put_contents("ReportChanges.json",json_encode($params));
-//    //$_SESSION["par"] = $params;
-//    //$_SESSION["cookie"] = $_COOKIE;
-//    //$_SESSION["headers2"] = getallheaders();;
-//    //return json_encode($_SESSION);
-//    //    return "JA";// json_encode($params);
-//    //}
-
-//    //public function Security( $header ){
-//    //    $_SESSION["security"] = $header ;
-
-//    //    $this->Authenticated = true; // This should be the result of an authenticating method
-//    //    $this->Username = $header->UsernameToken->Username;
-//    //    $this->Password = $header->UsernameToken->Password;
-//    //}
-//    function get($par=''){
-//        global $payload,$aim;
-//        return $aim;
-//    }
-//  //public function getMessage($par="")
-//  //{
-//  //  global $aim;
-//  //  return $aim;
-//  //  //$_SESSION["cookie"] = $_COOKIE;
-//  //  //$_SESSION["par"] = $par;
-//  //  //$_SESSION["headers2"] = getallheaders();;
-//  //  //return json_encode($_SESSION);
-//  //}
-
-//  //public function addNumbers($num1,$num2)
-//  //{
-//  //  return;// $a=555;//$num1+$num2;
-//  //}
-//}
-
 class his {
 	function get(){
 	    extract($GLOBALS);
@@ -254,9 +176,6 @@ class his {
 	    die(json_encode($rows));
 	}
 }
-
-
-/** @class soap */
 class soap {
 	function post(){
 		global $aim;
@@ -274,8 +193,6 @@ class soap {
 		die(soapitem);
 	}
 }
-
-/** @class auth */
 class auth {
 	/** @method login
 		* Nodig voor aanmelden
@@ -746,7 +663,6 @@ class auth {
 		die();
 	}
 }
-//die(ssss);
 class js{
 	function get(){
 	    //global $aim,$itemHost,$itemUser,$account;
@@ -832,11 +748,6 @@ class js{
 		],(array)$aim->config))).";".file_get_contents(__DIR__."/../lib/js/main.js"));
 	}
 }
-// class Website {
-//     function get($id=null) {
-//         die($id);
-//     }
-// }
 class server {
 	function scanpath($path,$name,$recursive=1){
         $data->path=$path;
@@ -860,7 +771,6 @@ class server {
 	}
 	function state(){
 		global $aim;
-		//die(json_encode(server::scanpath($_SERVER[DOCUMENT_ROOT]."/shared/","2347355")));
         if (isset($_GET[version])){
             $data->server->phpversion=phpversion();
         }
@@ -932,19 +842,6 @@ class server {
 
 			");
 		}
-
-
-
-		//while($row=fetch_object($res)) {
-		//    item::clean($row);
-		//    $items->{$row->id}=$row;
-		//    array_push($data->value,$row);
-		//}
-		//foreach($items as $id=>$row) if($row->schema==attribute && $row->masterID && $items->{$row->masterID}){
-		//    $items->{$row->masterID}->values->{$row->name}->id=$row->id;
-		//    if($row->detailID)$items->{$row->masterID}->values->{$row->name}->detailID=$row->detailID;
-		//}
-		//if(next_result($res)) while($row=fetch_object($res)) {
 		die(json_encode($data));
 	}
 	function dir(){
@@ -952,7 +849,6 @@ class server {
 		die(json_encode($data));
     }
 }
-
 class message {
     function put(){
         global $aim;
@@ -979,7 +875,6 @@ class message {
 		exit(json_encode($rows));
     }
 }
-
 class model2d {
 	function get(){
 		global $aim;
@@ -993,11 +888,8 @@ class model2d {
 		$put=json_decode(file_get_contents('php://input'));
 		query("INSERT om.itemChildren2D (masterID,childID,offsetTop,offsetLeft) VALUES ($aim->id,$put->childID,$put->offsetTop,$put->offsetLeft);");
 		die();
-		//err($aim);
-		//die(a.json_encode($aim));
 	}
 }
-
 class three {
 	function get(){
 		global $aim;
@@ -1040,17 +932,14 @@ class three {
 		die($fn);
 	}
 }
-
 class device1 {
     function put(){
-        //die('RESPONSE PUT VAN SITE '.file_get_contents('php://input'));
 		global $aim;
 		$put=json_decode(file_get_contents('php://input'));
 		$ret->value=array();
 		foreach ($put->value as $item) {
             if (class_exists($class=$item->schema) && method_exists($class,post)) $class::post($item);
             array_push($ret->value,$item=item::post($item));
-            //array_push($ret->value,class_exists($class=$item->schema) && method_exists($class,post) ? $class::post($item) : item::item(item::post($item)) );
         }
 		die(json_encode($ret));
 	}
@@ -1062,553 +951,369 @@ class device1 {
 		foreach ($put->value as $item) {
             if (class_exists($class=$item->schema) && method_exists($class,post)) $class::post($item);
             array_push($ret->value,$item=item::post($item));
-            //array_push($ret->value,class_exists($class=$item->schema) && method_exists($class,post) ? $class::post($item) : item::item(item::post($item)) );
         }
 		die(json_encode($ret));
 	}
 }
-
 class outlook {
 	function Contacts($Id){
-
 		err(outlookContacts,$Id);
-
 	}
 }
-
 class api {
-	function Users($address){
-		global $aim;
-		$address=explode("@",$address);
-		$aim->urlUserUid=array_shift($address);
-		$aim->urlHostUid=array_shift($address);
-	}
-	function get($par=null){
-		extract($GLOBALS);
-		extract((array)$aim->client);
-		//err($aim);
-		//return $par;
-		//err(aa);
-		//header("Content-type:application/json");
-
-		//return $aim;
-		if ($par) $aim=(object)$par;
-		//$aim=$aim;
-		//return $aim;
-
-        //err($aim);
-
-        $schema=preg_split('/\\(|\\)/', $aim->schema, -1, PREG_SPLIT_NO_EMPTY);
-        $aim->schema=$schema[0];
-        $function=preg_split('/\\(|\\)/', $aim->function, -1, PREG_SPLIT_NO_EMPTY);
-        $aim->function=$function[0]?:get;
-
-        //if(class_exists($class=$aim->schema) && $class!=item && method_exists($class,$method=$aim->function)) (new $class)->$method($param);
-		//err($aim);
-        if(is_numeric($schema[1]))$aim->id=$aim->id?:$schema[1];
-        else if($schema[1]) $aim->tag=str_replace("'","",$schema[1]);
-
-        foreach($_GET as $key=>$value)if($key[0]=="$")$aim->{trim(substr($key,1))}=trim($value);
-        if($aim->orderby)$aim->order=$aim->orderby;
-        if($aim->search)$aim->q=$aim->search;
-
-
-        if($aim->function==Children)$aim->child=$function[1]?:1;
-
-        //err(item_get,$aim);
-
-        $root=($_SERVER[HTTPS]==on?https:http)."://".$_SERVER[SERVER_NAME];
-		$data=$output=(object)array();
-
-
-		$headers=getallheaders();
-
-		//$headers=$aim->headers;
-//getallheaders();
-        foreach($headers as $key=>$value)$headers[strtolower($key)]=$value;
-		//$data->headers=$headers;
-
-		//=(object)array(
-		//    "@odata.context"=> $root.array_shift(explode("?",$_SERVER[REQUEST_URI]))."\$metadata#People",
-		//    "@odata.nextLink"=> $root.$_SERVER[REQUEST_URI]."&%24skiptoken=8",
-		//    );
-
-
-		//if ($headers['odata-version']){
-		//    header('Content-Type: application/json; odata.metadata=minimal');
-		//    header('OData-Version: 4.0');
-		//    $output->{"@odata.context"}= $root.array_shift(explode("?",$_SERVER[REQUEST_URI]))."\$metadata#People";
-		//    $output->{"@odata.nextLink"}= $root.$_SERVER[REQUEST_URI]."&%24skiptoken=8";
-		//}
-		//else {
-		//    header('Content-Type: application/json');
-		//    header('AData-Version: 1.0');
-		//    $output->{"@odata.context"}= $root.array_shift(explode("?",$_SERVER[REQUEST_URI]))."\$metadata#People";
-		//    $output->{"@odata.nextLink"}= $root.$_SERVER[REQUEST_URI]."&%24skiptoken=8";
-		//}
-
-		//$output->header=getallheaders();
-
-		//return $headers;
-
-		//return $aim;
-		$accept==$headers[Accept];
-		//return a;
-				//return $aim;
-
-		//SOAP TEST
-		connect::authorization();
-		//*/
-
-		//err($access,$aim);
-		//return $aim;
-
-        //
-        // $output->server=$_SERVER;
-        // $output->aim=$aim;
-		//err($aim);
-
-		if(isset($_GET[device])){
-		//wordt gebruikt door node connector
-			$q="
-				DECLARE @T TABLE(level int,id int,detailID int)
-				;WITH P (level,id,detailID) AS (
-					SELECT 0,$aim->id,0
-					UNION ALL
-					SELECT level+1,I.id,I.detailID
-					FROM P INNER JOIN api.items I ON I.masterID=P.id AND level<50 AND ISNULL(I.selected,1)=1
-				)
-				INSERT @T SELECT * FROM P
-				SELECT P.level,I.* FROM @T P INNER JOIN api.citems I ON I.id IN (P.id,P.detailID) ORDER BY level,I.idx
-				--SELECT P.level,I.id,I.detailID,name,title,masterID,srcID FROM @T P INNER JOIN api.citems I ON I.id IN (P.id,P.detailID) ORDER BY level,I.idx
-
-				;WITH P (level,id,srcID) AS (SELECT 0,I.id,I.id FROM @T I UNION ALL SELECT level+1,P.id,ISNULL(I.inheritedID,I.srcID) FROM api.items I INNER JOIN P ON I.id=P.srcID AND level<20)
-				SELECT P.id,A.aid,A.id attributeItemID,A.name,A.value,A.itemID,CONVERT(VARCHAR(50),A.modifiedDT,127)modifiedDT,A.userID FROM P INNER JOIN api.attributes A ON A.id=P.srcID AND A.value IS NOT NULL AND P.srcID IS NOT NULL ORDER BY P.level DESC
-
-				--selecteer alle control items met detail link
-				--;WITH P ( level, id,detailID,selected)    	AS    (
-				--	SELECT 0,I.id,I.detailID,I.selected
-				--	FROM   		om.items I
-				--	WHERE  I.id = 3563194
-				--	UNION ALL
-				--	SELECT level+1,I.id,I.detailID,CASE WHEN P.selected=0 THEN CONVERT(BIT,0) ELSE ISNULL(I.selected,1) END
-				--	FROM    		P   		INNER JOIN om.items I ON I.masterId = P.id and level<8
-				--)
-				--SELECT * FROM P
-				--WHERE P.detailID IS NOT NULL
-			";
-			//die(str_replace(";",PHP_EOL.";",$q));
-			//die("<plaintext>".str_replace(";",PHP_EOL.";",$q));
-			$res=query($q);
-			while($row=fetch_object($res)) {
-				$items->{$row->id}=cleanrow($row);
-				$items->{$row->id}->hasControlObject=false;
-			}
-			//if(next_result($res)) while($row=fetch_object($res)) if(!$items->{$row->id}->values->{$row->name}){$items->{$row->id}->values->{$row->name}=cleanrow($row);unset($row->id);}
-
-
-			if(next_result($res)) while($row=fetch_object($res)) {
-				//if (!$row->value && $row->value!=="0" && $row->value!=="") err($row);
-				$items->{$row->id}->values->{$row->name}=cleanrow($row);
-				unset($row->id);
-			}
-
-			//foreach ($items as $id=>$value) foreach([Value,CriticalFailure,NonCriticalFailure,Locking,Maintenance,Running,RunningMode,Security,PreWarning_1,PreWarning_2,PreWarning_3,MeasurementErrorFlag] as $key) unset($value->values->{$key});
-
-			//if(next_result($res))
-			//    while($row=fetch_object($res))
-			//        if($items->{$row->detailID}) {
-			//            $items->{$row->detailID}->hasControlObject=true;
-			//            $items->{$row->detailID}->hasControlObjectSelected=$row->selected;
-			//        }
-
-			$data->value=array_values((array)$items);
-			die(json_encode($data));
-		}
-
-		if(($schema=$aim->api->definitions->{$aim->schema}) && ($dbname=$aim->api->dbname) && $schema->table){
-			$schema->schema=$aim->schema;
-			if($put){
-				foreach($put->value as $row)query($q="UPDATE $dbname.$schema->table SET ".(paramfields($row->values))." WHERE [$schema->id]='$row->id';");
-				die($q);
-			}
-			$data->value=getRecordset($schema,$aim->api->dbname);
-			die(json_encode($data));
-		}
-		//err(wwww,$aim);
-
-										//err(get,$aim);
-		$aim->schema=$aim->schema?:(is_numeric($aim->folder)?item:$aim->folder?:item);
-		if(is_numeric($aim->folder))$aim->id=(int)$aim->folder;
-
-		//if(!$aim->id && !$aim->schema) return;
-
-
-		//if($_GET[schema])$aim->schema=$_GET[schema];
-
-		//err($aim);
-
-		if(property_exists($aim,reindex) && $aim->id)item::reindex($aim->id);
-		//$data=(object)$_GET;
-		//$data->count=0;
-
-		//$aim->ContentType=$aim->ContentType?:$headers["Content-Type"];
-
-
-
-		$filter=str_replace(array('*',' eq ',' ne ',' gt ',' ge ',' lt ',' le '),array('%',' = ',' <> ',' > ',' >= ',' < ',' <= '),str_replace('"',"'",urldecode($_GET[filter]?"AND(".$_GET[filter].")":"")));
-		$selectbasic=$GLOBALS[selectbasic];
-		$selectlist=$GLOBALS[selectlist];
-		$selectall=$GLOBALS[selectall];
-		//$userID=$aim->userID?:0;
-
-		//err($aim);
-
-		$q=";DECLARE @R TABLE (fromID INT, toID INT, ref VARCHAR(50),level INT);DECLARE @T TABLE (_id int)";
-		if ($aim->id) {
-			//die($aim->id);
-			$select="[".implode("],[",explode(",",$selectlist))."]";
-			//if(!property_exists($aim,child) && !property_exists($aim,link)) $q.="INSERT @T VALUES (NULL,NULL,NULL,0,$aim->id)";
-			if($aim->child!=1) $q.="INSERT @T VALUES ($aim->id)";
-			if(property_exists($aim,child))$q.="
-				;WITH P(level,p_id,p_masterID,p_detailID)AS(
-					SELECT 0,id,masterID,detailID
-					FROM api.items WHERE id=$aim->id
-					UNION ALL
-					SELECT level+1,id,masterID,detailID
-					FROM P INNER JOIN api.citems I ON masterID=ISNULL(P.p_detailID,P.p_id) $filter AND level<".($aim->child?:10)."
-				)INSERT @R SELECT P.p_masterID,P.p_id,'Child',P.level FROM P WHERE level>0
-			";
-			if(property_exists($aim,tree))$q.="
-				;WITH P(level,p_id,p_masterID,p_detailID)AS(
-					SELECT 0,id,masterID,detailID
-					FROM api.items WHERE id=$aim->id
-					UNION ALL
-					SELECT level+1,id,masterID,detailID
-					FROM P INNER JOIN api.citems I ON masterID=P.p_id $filter AND level<".($aim->tree?:10)."
-				)INSERT @R SELECT P.p_masterID,P.p_id,'Child',P.level FROM P
-			";
-			if(property_exists($aim,master))$q.="
-			    ;WITH P(level,id,masterID)AS(
-			        SELECT 0,id,masterID
-			        FROM api.items WHERE id=$aim->id
-			        UNION ALL
-			        SELECT level-1,I.id,I.masterID
-			        FROM P INNER JOIN api.items I ON I.id=P.masterID AND I.masterID<>I.srcID AND level>-".($aim->master?:10)."
-			    )INSERT @R SELECT P.masterID,P.id,'Child',P.level FROM P --WHERE P.level<0
-			";
-			if(property_exists($aim,src))$q.="
-			    ;WITH P(level,id,srcID)AS(
-			        SELECT 0,id,srcID
-			        FROM api.items I
-					--INNER JOIN @R R ON I.id = R.toID
-					WHERE id=$aim->id
-			        UNION ALL
-			        SELECT level-1,I.id,I.srcID
-			        FROM P INNER JOIN api.items I ON I.id=P.srcID AND level>-".($aim->master?:10)."
-			    )INSERT @R SELECT P.srcID,P.id,'Derivative',P.level FROM P --WHERE P.level<0
-			";
-			if(property_exists($aim,users))$q.=";
-			    INSERT @R SELECT F.userID,F.id,'Subscribers',1
-			    FROM @T T
-			    INNER JOIN om.itemFav F ON F.id=$aim->id
-			";
-			if(property_exists($aim,refby)) $q.=";
-			    INSERT @R SELECT F.id,F.itemID,'Attribute',1
-			    FROM om.fields F WHERE itemID=$aim->id
-			";
-			if(property_exists($aim,link)) $q.="
-			    INSERT @R
-				SELECT L.fromID,L.toID,'Link',1
-				FROM om.link L WHERE fromID IN (SELECT fromID FROM @R) --=$aim->id
-				UNION
-				SELECT L.fromID,L.toID,'Link',1
-				FROM om.link L WHERE toID IN (SELECT fromID FROM @R) --=$aim->id
-			";
-			if($aim->select=="*") $q.=";
-			    INSERT @R
-				SELECT F.id,F.userID,'users',1
-				FROM om.itemFav F
-				WHERE F.id=$aim->id
-			";
-			$q.=";
-				INSERT @T SELECT
-					fromID FROM @R WHERE fromID IS NOT NULL AND fromID != $aim->id --AND fromID NOT IN (SELECT _id FROM @T)
-					UNION
-					SELECT toID FROM @R WHERE toID IS NOT NULL AND toID != $aim->id --AND toID NOT IN (SELECT _id FROM @T)
-			";
-			$q.=";
-				INSERT @T SELECT I.detailID FROM api.items I INNER JOIN @T T ON T._id=I.id WHERE I.detailID IS NOT NULL AND I.detailID NOT IN (SELECT _id FROM @T)
-			";
-		}
-		else if ($aim->q || $filter || $aim->folder || property_exists($aim,sync)) {
-			//err($aim);
-			//$aim->schema=$aim->schema?:$aim->folder;
-			$onlyhost="(hostID IN($host->id".($aim->clientgroupID?",".$aim->clientgroupID:"").($aim->clientuserID?",".$aim->clientuserID:"").")OR(hostID=1 AND www=1))".(!$aim->authOK && !$account->id?"AND(www=1)":"");
-			$q.=";DECLARE @classID INT;".($aim->classID?"SET @classID=$aim->classID":($aim->schema!=item?"SELECT @classID=id FROM om.class WHERE(class='$aim->schema')":""));
-			$base=";INSERT @T SELECT id FROM api.citems WHERE($onlyhost)".($aim->schema!=item?"AND(classID=@classID)":"")."$filter";
-			if (!$aim->q || $aim->q=='*') $q.=$base;
-			else {
-				$aim->q=trim(str_replace('*','%',$aim->q));
-				if ($aim->search){
-					$or=array();
-					foreach(explode(",",$aim->search)as $attributeName) {
-						$q.="$base AND [$attributeName]LIKE'%".implode("%'AND[$attributeName]LIKE'%",explode(" ",$aim->q))."%' AND id NOT IN (SELECT id FROM @T)";
-					}
-					//$q.=$base."AND(".implode(')OR(',$or).")";
-					//foreach(explode(",",$aim->search)as $attributeName) array_push($or,"[$attributeName]LIKE'%".implode("%'AND[$attributeName]LIKE'%",explode(" ",$aim->q))."%'");
-				}
-				function explodeq($sep,$aq){
-					$aq=explode($sep,$aq);
-					foreach ($aq as $i=>$q)$aq[$i]=strpos($q,'%')?$q:"$q";
-					return $aq;
-				}
-				$qword="id IN (SELECT itemID FROM om.itemWord WI INNER JOIN om.word W ON W.id=WI.wordID AND W.word LIKE '";
-				$q.="$base AND ($qword".implode("'))AND($qword",explodeq(' ',$aim->q))."'))AND id NOT IN (SELECT id FROM @T)";
-			}
-			if (property_exists($aim,count)){
-				//die($q);
-				$data->count=fetch_object($res=query("$q;SELECT count(0)count FROM @T"))->count;
-				die(json_encode($data));
-			}
-			//die($select);
-			//$q.=";SET NOCOUNT OFF;SELECT [schema],I.id,$select FROM api.citems I INNER JOIN @T T ON T.id=I.id";
-		}
-		$q.=";SET NOCOUNT OFF;SET TEXTSIZE -1;";
-
-
-		$select=!$aim->select || $aim->select=='*'?($aim->id?$selectall:$selectlist):$aim->select;
-		$fields=array_diff(explode(',',$select),explode(',',$selectall.',schema,masterID,id,level'));
-		$select=implode(',',array_intersect(explode(',',$select),explode(',',($selectall).',level')));
-        $top=$_GET[top]?:10000;
-		$q.=";SELECT id,[schema],LastModifiedDateTime,CreatedDateTime,ParentFolderId,SourceObjectId,StartDateTime,ChildIndex,UniqueKey,masterID".($select?",$select":"")." \r\nFROM (SELECT DISTINCT TOP $top T._id FROM @T T) T \r\nINNER JOIN api.userItems(0$user->id) I \r\nON I.id=T._id;SELECT * FROM @R";
-		//if($aim->select=='*')$q.=";SELECT F.id,F.name,F.value,F.itemID FROM @T T INNER JOIN om.fields F ON F.id=".(property_exists($aim,selectall)?"T._id":$aim->id);
-		if($aim->select=='*')$q.=";WITH P (level,id,srcID)AS(SELECT 0,I._id,I._id FROM @T I UNION ALL SELECT level+1,P.id,ISNULL(I.inheritedID,I.srcID) FROM api.items I INNER JOIN P ON I.id=P.srcID AND level<10) SELECT P.id,A.aid,A.id attributeItemID,A.name,A.value,A.itemID,A.modifiedDT,A.userID FROM P INNER JOIN api.attributes A ON A.id=P.srcID AND A.value IS NOT NULL AND P.srcID IS NOT NULL ORDER BY P.level";
-
-        //SELECT S.id,F.id itemID,F.name,F.value,F.itemID FROM @T T INNER JOIN om.itemSrc S ON S.id=".(property_exists($aim,selectall)?"T._id":$aim->id)." INNER JOIN om.fields F ON F.id=S.srcID ORDER BY S.level
-		else if($fields)$q.=";SELECT A.id,A.name,A.value,A.itemID,A.modifiedDT,A.userID FROM @T T INNER JOIN api.attributes A ON A.id=T._id AND[fieldID]IN(SELECT[id]FROM[om].[field]WHERE[name]IN('".implode("','",$fields)."'))";
-		if($aim->select=='*' && $aim->id && $user->id)$q.=";SET NOCOUNT ON;EXEC api.addItemUserVisit @id=$aim->id,@userID=$user->id";
-
-
-
-		//die("<plaintext>".str_replace(";",PHP_EOL.";",$q));
-
-
-		// http_response_code(204); // set response code 204 No content
-		// http_response_code(200); // set response code 200 OK
-		//
-
-		/*
-			http_response_code(201); // set response code 201 Created
-			HEADER=
-			HTTP/1.1 201 Created
-			Content-Length: 652
-			Content-Type: application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false;charset=utf-8
-			ETag: W/'08D1D3800FC572E3'
-			Location: https://services.odata.org/V4/(S(34wtn2c0hkuk5ekg0pjr513b))/TripPinServiceRW/People('lewisblack')
-			OData-Version: 4.0
-		*/
-
-		if ($headers["odata-version"]){
-			header('Content-Type: application/json; odata.metadata=minimal');
-			header('OData-Version: 4.0');
-			$output->{"@odata.context"} = $root.array_shift(explode("?",$_SERVER[REQUEST_URI]))."\$metadata#".$aim->schema;
-			if(!$_GET[id]){
-				$output->{"@odata.nextLink"}= $root.$_SERVER[REQUEST_URI]."&%24skip=8";
-			}
-		}
-		//$data->schema=$aim->schema;
-
-		//die(json_encode(array(q=>$q)));
-		//return [$q];
-		//$q="SELECT TOP 1 * FROM api.items";
-		$res=query($q);
-
-		//return fetch_object($res);
-		//return $aim;
-
-		//err($_GET);
-		$getItem = $aim->schema && $aim->id && !$aim->child && !$aim->folder;// && $_GET[id] && !$_GET[child];
-		$datavalue = [];
-		//err($getItem);
-		//if(!$_GET[id])$data->value=array();
-		//err($data);
-
-		while($row=fetch_object($res)) {
-			//echo $row->id;
-		//return $q;
-
-		//  MAKEN   CreatedDateTime,LastModifiedDateTime,ChangeKey,ParentFolderId,SourceId
-
-			$items->{$row->id} = $item = $getItem ? $data : (object)array();
-
-			//$payload=[hostID=>$row->hostID,server=>'db1.aliconnect.nl',db=>'aim',schema=>$row->schema,id=>$row->id,uid=>$row->uid];
-
-
-
-			$Id=getId([hostID=>$row->hostID,schema=>$row->schema,id=>$row->id,uid=>$row->uid]);
-
-			array_push($datavalue, $items->{$row->id});
-			//err($datavalue);
-			//err($row);
-			//if($_GET[id])$item=$items->{$row->id}=$data;
-			//if ($headers['odata-version']>=1){
-			//if ($headers["odata-version"]){
-			//err($aim);
-
-			$aim->userUID='4EC074C5-0A13-4250-9B21-565B809ABAE5';
-			if ($headers["odata-version"]){
-				$item->{"@odata.id"}=$odataId=$root."/$aim->host/api/$aim->version/Users('$aim->userUID@$aim->hostUID')/$row->schema('$Id')";
-				$item->{"@odata.etag"}="W/'".base64_encode($row->LastModifiedDateTime)."'";
-			}
-
-
-				//$item->{"@odata.editLink"}=$odataId;
-				$item->Id=$Id;
-				//header('Content-Type: application/json; odata.metadata=minimal');
-				//header('OData-Version: 4.0');
-			//}
-			//}
-			if($row->masterID && !$row->ParentFolderId) query("UPDATE om.items SET ParentFolderId='".($row->ParentFolderId=getId($row->masterID))."' WHERE id=$row->id");
-			if($row->srcID && !$row->SourceObjectId) query("UPDATE om.items SET SourceObjectId='".($row->SourceObjectId=getId($row->srcID))."' WHERE id=$row->id");
-			//unset($row->schema,$row->id,$row->uid,$row->masterID,$row->srcID,$row->idx,$row->hostID);
-
-
-			//err($item);
-
-			//item::clean($row);
-            //$row->url="https://aliconnect.nl/aim/v1/api/?schema=$aim->schema&id=$row->id&select=*";
-
-			//$item=$aim->id?$data:$items->{$row->id};
-            foreach($row as $key=>$value){
-    			if(is_null($value)||$value==="") continue;
-    			if(is_numeric($value))$value=floatval($value);
-    			if(is_string($value) && in_array($value[0],array('{','['))) $value=json_decode($value);
-    	        else if(is_string($value)) $value=trim($value);
-                $item->{$key}=$value;
-    		}
-		}
-		//if(count($data->value))
-		//err($getItem,$datavalue);
-
-		if(!$getItem) $data->value=$datavalue;
-
-		//if(count($datavalue)>1)$data->value=$datavalue;
-		//$data->value=$value;
-		//err($data);
-
-		foreach($items as $id=>$row) if($row->schema==attribute && $row->masterID && $items->{$row->masterID}){
-			$items->{$row->masterID}->values->{$row->name}->id=$row->id;
-			if($row->detailID)$items->{$row->masterID}->values->{$row->name}->detailID=$row->detailID;
-		}
-		if(next_result($res)) while($row=fetch_object($res)) {
-			if($row->fromID && $row->toID && $items->{$row->fromID}) {
-				$items->{$row->fromID}->linkto->{$row->toID}=$row->ref;
-				$a=$items->{$row->fromID}->link->{$row->ref}=$items->{$row->fromID}->link->{$row->ref}?:array();
-				array_push($items->{$row->fromID}->link->{$row->ref},$row->toID);
-			}
-		}
-		if(next_result($res)) while($row=fetch_object($res)) if($row->name) {
-			//$row->name=ucfirst($row->name);
-			if(property_exists($aim,sync) || $headers['odata-version']) $items->{$row->id}->{$row->name}=$row->value;
-			else {
-				//$items->{$row->id}->values->{$row->name}=$items->{$row->id}->values->{$row->name}?:$row;
-				if($row->attributeItemID==$row->id)$items->{$row->id}->values->{$row->name}->aid=$row->aid;
-				if($row->attributeItemID!=$row->id && !$items->{$row->id}->values->{$row->name}->valueSource)$items->{$row->id}->values->{$row->name}->valueSource=$row->value;
-				if($row->value!="" && !$items->{$row->id}->values->{$row->name}->value)$items->{$row->id}->values->{$row->name}->value=$row->value;
-				if($row->itemID && !$items->{$row->id}->values->{$row->name}->itemID)$items->{$row->id}->values->{$row->name}->itemID=$row->itemID;
-				if($row->userID && !$items->{$row->id}->values->{$row->name}->userID)$items->{$row->id}->values->{$row->name}->userID=$row->userID;
-				if($row->modifiedDT && !$items->{$row->id}->values->{$row->name}->modifiedDT)$items->{$row->id}->values->{$row->name}->modifiedDT=$row->modifiedDT;
-				//if ($row->itemID && $row->itemID!=$row->id) $items->{$row->id}->values->{$row->name}->sourceValue=$row->value;
-				//if(!$row->itemID)unset($row->itemID);
-				//unset($row->id,$row->name);
-				//unset($row->name);
-			}
-		}
-		//foreach($items as $id=>$row) $row->values1=$row->values;
-		if($aim->type==tbl){
-			header("Content-type: text/html");
-			echo '<base target="_blank"><link href="/lib/css/tbl.css" rel="stylesheet" /><table>';
-			$select=explode(",",$aim->select);
-			echo '<tr><td>'.implode("</td><td>",$select)."</td></tr>";
-			foreach ($items as $id=>$item){
-				echo "<tr>";
-				foreach($select as $key) echo"<td>".($item->{$key}?:($item->values&&$item->values->{$key}?$item->values->{$key}->value:""))."</td>";
-				echo "</tr>";
-			}
-			echo "</table>";
-			die();
-		}
-
-		if(strpos($_GET[contentType], xml) !== false) {
-			header("Content-type: text/xml");
-			$xml = new SimpleXMLElement('<value></value>');
-			foreach ($items as $id=>$item){
-				//if(!$item->schema) continue;
-				$xmlItem = $xml->addChild($item->schema);
-				if ($item->filterfields) {
-					$xmlValues=$xmlItem->addChild('filterfields');
-					foreach ($item->filterfields as $key => $value) $xmlValues[$key]=$value;
-					unset($item->filterfields);
-				}
-				if ($item->values) {
-					$xmlValues=$xmlItem->addChild('values');
-					foreach ($item->values as $key => $value) {
-						$xmlValue=$xmlValues->addChild($key,$value->value);
-						unset($value->value);
-						foreach ($value as $attrname => $attr) $xmlValue[$attrname]=$attr;
-					}
-					unset($item->values);
-				}
-				foreach ($item as $key => $value) if ($value!="") $xmlItem[$key]=$value;
-			}
-			die($xml->asXml());
-		}
-				//die(a);
-
-		$data->count=count($data->value);
-		//$data=aaa;
-		return $data;
-		//die(json_encode($data));
-	}
-	function put(){
-        //echo "put0";
-        //die(kkkk);
-        //die(json_encode(array(test=>max)));
-		global $aim,$put;
-		$put=json_decode(file_get_contents('php://input'));
-		$ret->value=array();
-		foreach ($put->value as $item) {
-            if (class_exists($class=$item->schema) && method_exists($class,post)) $class::post($item);
-            array_push($ret->value,$item=item::post($item));
-            //array_push($ret->value,class_exists($class=$item->schema) && method_exists($class,post) ? $class::post($item) : item::item(item::post($item)) );
+  function Users($address){
+    global $aim;
+    $address=explode("@",$address);
+    $aim->urlUserUid=array_shift($address);
+    $aim->urlHostUid=array_shift($address);
+  }
+  function get($par=null){
+    extract($GLOBALS);
+    extract((array)$aim->client);
+    if ($par) $aim=(object)$par;
+    $schema=preg_split('/\\(|\\)/', $aim->schema, -1, PREG_SPLIT_NO_EMPTY);
+    $aim->schema=$schema[0];
+    $function=preg_split('/\\(|\\)/', $aim->function, -1, PREG_SPLIT_NO_EMPTY);
+    $aim->function=$function[0]?:get;
+    if(is_numeric($schema[1]))$aim->id=$aim->id?:$schema[1];
+    else if($schema[1]) $aim->tag=str_replace("'","",$schema[1]);
+    foreach($_GET as $key=>$value)if($key[0]=="$")$aim->{trim(substr($key,1))}=trim($value);
+    if($aim->orderby)$aim->order=$aim->orderby;
+    if($aim->search)$aim->q=$aim->search;
+    if($aim->function==Children)$aim->child=$function[1]?:1;
+    $root=($_SERVER[HTTPS]==on?https:http)."://".$_SERVER[SERVER_NAME];
+    $data=$output=(object)array();
+    $headers=getallheaders();
+    foreach($headers as $key=>$value)$headers[strtolower($key)]=$value;
+    $accept==$headers[Accept];
+    connect::authorization();
+    if(isset($_GET[device])){
+      $q="
+      DECLARE @T TABLE(level int,id int,detailID int)
+      ;WITH P (level,id,detailID) AS (
+        SELECT 0,$aim->id,0
+        UNION ALL
+        SELECT level+1,I.id,I.detailID
+        FROM P INNER JOIN api.items I ON I.masterID=P.id AND level<50 AND ISNULL(I.selected,1)=1
+        )
+        INSERT @T SELECT * FROM P
+        SELECT P.level,I.* FROM @T P INNER JOIN api.citems I ON I.id IN (P.id,P.detailID) ORDER BY level,I.idx
+        --SELECT P.level,I.id,I.detailID,name,title,masterID,srcID FROM @T P INNER JOIN api.citems I ON I.id IN (P.id,P.detailID) ORDER BY level,I.idx
+
+        ;WITH P (level,id,srcID) AS (SELECT 0,I.id,I.id FROM @T I UNION ALL SELECT level+1,P.id,ISNULL(I.inheritedID,I.srcID) FROM api.items I INNER JOIN P ON I.id=P.srcID AND level<20)
+        SELECT P.id,A.aid,A.id attributeItemID,A.name,A.value,A.itemID,CONVERT(VARCHAR(50),A.modifiedDT,127)modifiedDT,A.userID FROM P INNER JOIN api.attributes A ON A.id=P.srcID AND A.value IS NOT NULL AND P.srcID IS NOT NULL ORDER BY P.level DESC
+
+        --selecteer alle control items met detail link
+        --;WITH P ( level, id,detailID,selected)    	AS    (
+          --	SELECT 0,I.id,I.detailID,I.selected
+          --	FROM   		om.items I
+          --	WHERE  I.id = 3563194
+          --	UNION ALL
+          --	SELECT level+1,I.id,I.detailID,CASE WHEN P.selected=0 THEN CONVERT(BIT,0) ELSE ISNULL(I.selected,1) END
+          --	FROM    		P   		INNER JOIN om.items I ON I.masterId = P.id and level<8
+          --)
+          --SELECT * FROM P
+          --WHERE P.detailID IS NOT NULL
+          ";
+          $res=query($q);
+          while($row=fetch_object($res)) {
+            $items->{$row->id}=cleanrow($row);
+            $items->{$row->id}->hasControlObject=false;
+          }
+          if(next_result($res)) while($row=fetch_object($res)) {
+            //if (!$row->value && $row->value!=="0" && $row->value!=="") err($row);
+            $items->{$row->id}->values->{$row->name}=cleanrow($row);
+            unset($row->id);
+          }
+          $data->value=array_values((array)$items);
+          die(json_encode($data));
         }
 
-        header("Content-Type: application/json");
-        header('X-Content-Type-Options: nosniff');
-		die(json_encode($ret));
-	}
-	function post(){
-		global $aim;
-		$put=$input=json_decode(file_get_contents('php://input'));
-		$value=$input->value?:[$input];
-		$ret->value=array();
-		foreach ($value as $item) {
-            if (class_exists($class=$item->schema) && method_exists($class,post)) $class::post($item);
-            array_push($ret->value,$item=item::post($item));
+        if(($schema=$aim->api->definitions->{$aim->schema}) && ($dbname=$aim->api->dbname) && $schema->table){
+          $schema->schema=$aim->schema;
+          if($put){
+            foreach($put->value as $row)query($q="UPDATE $dbname.$schema->table SET ".(paramfields($row->values))." WHERE [$schema->id]='$row->id';");
+            die($q);
+          }
+          $data->value=getRecordset($schema,$aim->api->dbname);
+          die(json_encode($data));
         }
-        header("Content-Type: application/json");
-        header('X-Content-Type-Options: nosniff');
-		die(json_encode($ret));
-	}
-	function delete(){
-		global $aim;
-		//err($aim);
-		$row=fetch_object(dbexec("api.delItem",array(id=>$aim->id,userID=>$cookie->userID,hostID=>$cookie->hostID)));
-		//rrmdir($_SERVER['DOCUMENT_ROOT']."/content/$row->path");
-		die($row->path);
-	}
-}
+        $aim->schema=$aim->schema?:(is_numeric($aim->folder)?item:$aim->folder?:item);
+        if(is_numeric($aim->folder))$aim->id=(int)$aim->folder;
+        if(property_exists($aim,reindex) && $aim->id)item::reindex($aim->id);
+        $filter=str_replace(array('*',' eq ',' ne ',' gt ',' ge ',' lt ',' le '),array('%',' = ',' <> ',' > ',' >= ',' < ',' <= '),str_replace('"',"'",urldecode($_GET[filter]?"AND(".$_GET[filter].")":"")));
+        $selectbasic=$GLOBALS[selectbasic];
+        $selectlist=$GLOBALS[selectlist];
+        $selectall=$GLOBALS[selectall];
+        $q=";DECLARE @R TABLE (fromID INT, toID INT, ref VARCHAR(50),level INT);DECLARE @T TABLE (_id int)";
+        if ($aim->id) {
+          //die($aim->id);
+          $select="[".implode("],[",explode(",",$selectlist))."]";
+          //if(!property_exists($aim,child) && !property_exists($aim,link)) $q.="INSERT @T VALUES (NULL,NULL,NULL,0,$aim->id)";
+          if($aim->child!=1) $q.="INSERT @T VALUES ($aim->id)";
+          if(property_exists($aim,child))$q.="
+          ;WITH P(level,p_id,p_masterID,p_detailID)AS(
+            SELECT 0,id,masterID,detailID
+            FROM api.items WHERE id=$aim->id
+            UNION ALL
+            SELECT level+1,id,masterID,detailID
+            FROM P INNER JOIN api.citems I ON masterID=ISNULL(P.p_detailID,P.p_id) $filter AND level<".($aim->child?:10)."
+            )INSERT @R SELECT P.p_masterID,P.p_id,'Child',P.level FROM P WHERE level>0
+            ";
+            if(property_exists($aim,tree))$q.="
+            ;WITH P(level,p_id,p_masterID,p_detailID)AS(
+              SELECT 0,id,masterID,detailID
+              FROM api.items WHERE id=$aim->id
+              UNION ALL
+              SELECT level+1,id,masterID,detailID
+              FROM P INNER JOIN api.citems I ON masterID=P.p_id $filter AND level<".($aim->tree?:10)."
+              )INSERT @R SELECT P.p_masterID,P.p_id,'Child',P.level FROM P
+              ";
+              if(property_exists($aim,master))$q.="
+              ;WITH P(level,id,masterID)AS(
+                SELECT 0,id,masterID
+                FROM api.items WHERE id=$aim->id
+                UNION ALL
+                SELECT level-1,I.id,I.masterID
+                FROM P INNER JOIN api.items I ON I.id=P.masterID AND I.masterID<>I.srcID AND level>-".($aim->master?:10)."
+                )INSERT @R SELECT P.masterID,P.id,'Child',P.level FROM P --WHERE P.level<0
+                ";
+                if(property_exists($aim,src))$q.="
+                ;WITH P(level,id,srcID)AS(
+                  SELECT 0,id,srcID
+                  FROM api.items I
+                  --INNER JOIN @R R ON I.id = R.toID
+                  WHERE id=$aim->id
+                  UNION ALL
+                  SELECT level-1,I.id,I.srcID
+                  FROM P INNER JOIN api.items I ON I.id=P.srcID AND level>-".($aim->master?:10)."
+                  )INSERT @R SELECT P.srcID,P.id,'Derivative',P.level FROM P --WHERE P.level<0
+                  ";
+                  if(property_exists($aim,users))$q.=";
+                  INSERT @R SELECT F.userID,F.id,'Subscribers',1
+                  FROM @T T
+                  INNER JOIN om.itemFav F ON F.id=$aim->id
+                  ";
+                  if(property_exists($aim,refby)) $q.=";
+                  INSERT @R SELECT F.id,F.itemID,'Attribute',1
+                  FROM om.fields F WHERE itemID=$aim->id
+                  ";
+                  if(property_exists($aim,link)) $q.="
+                  INSERT @R
+                  SELECT L.fromID,L.toID,'Link',1
+                  FROM om.link L WHERE fromID IN (SELECT fromID FROM @R) --=$aim->id
+                  UNION
+                  SELECT L.fromID,L.toID,'Link',1
+                  FROM om.link L WHERE toID IN (SELECT fromID FROM @R) --=$aim->id
+                  ";
+                  if($aim->select=="*") $q.=";
+                  INSERT @R
+                  SELECT F.id,F.userID,'users',1
+                  FROM om.itemFav F
+                  WHERE F.id=$aim->id
+                  ";
+                  $q.=";
+                  INSERT @T SELECT
+                  fromID FROM @R WHERE fromID IS NOT NULL AND fromID != $aim->id --AND fromID NOT IN (SELECT _id FROM @T)
+                  UNION
+                  SELECT toID FROM @R WHERE toID IS NOT NULL AND toID != $aim->id --AND toID NOT IN (SELECT _id FROM @T)
+                  ";
+                  $q.=";
+                  INSERT @T SELECT I.detailID FROM api.items I INNER JOIN @T T ON T._id=I.id WHERE I.detailID IS NOT NULL AND I.detailID NOT IN (SELECT _id FROM @T)
+                  ";
+                }
+                else if ($aim->q || $filter || $aim->folder || property_exists($aim,sync)) {
+                  //err($aim);
+                  //$aim->schema=$aim->schema?:$aim->folder;
+                  $onlyhost="(hostID IN($host->id".($aim->clientgroupID?",".$aim->clientgroupID:"").($aim->clientuserID?",".$aim->clientuserID:"").")OR(hostID=1 AND www=1))".(!$aim->authOK && !$account->id?"AND(www=1)":"");
+                  $q.=";DECLARE @classID INT;".($aim->classID?"SET @classID=$aim->classID":($aim->schema!=item?"SELECT @classID=id FROM om.class WHERE(class='$aim->schema')":""));
+                  $base=";INSERT @T SELECT id FROM api.citems WHERE($onlyhost)".($aim->schema!=item?"AND(classID=@classID)":"")."$filter";
+                  if (!$aim->q || $aim->q=='*') $q.=$base;
+                  else {
+                    $aim->q=trim(str_replace('*','%',$aim->q));
+                    if ($aim->search){
+                      $or=array();
+                      foreach(explode(",",$aim->search)as $attributeName) {
+                        $q.="$base AND [$attributeName]LIKE'%".implode("%'AND[$attributeName]LIKE'%",explode(" ",$aim->q))."%' AND id NOT IN (SELECT id FROM @T)";
+                      }
+                      //$q.=$base."AND(".implode(')OR(',$or).")";
+                      //foreach(explode(",",$aim->search)as $attributeName) array_push($or,"[$attributeName]LIKE'%".implode("%'AND[$attributeName]LIKE'%",explode(" ",$aim->q))."%'");
+                    }
+                    function explodeq($sep,$aq){
+                      $aq=explode($sep,$aq);
+                      foreach ($aq as $i=>$q)$aq[$i]=strpos($q,'%')?$q:"$q";
+                      return $aq;
+                    }
+                    $qword="id IN (SELECT itemID FROM om.itemWord WI INNER JOIN om.word W ON W.id=WI.wordID AND W.word LIKE '";
+                    $q.="$base AND ($qword".implode("'))AND($qword",explodeq(' ',$aim->q))."'))AND id NOT IN (SELECT id FROM @T)";
+                  }
+                  if (property_exists($aim,count)){
+                    //die($q);
+                    $data->count=fetch_object($res=query("$q;SELECT count(0)count FROM @T"))->count;
+                    die(json_encode($data));
+                  }
+                  //die($select);
+                  //$q.=";SET NOCOUNT OFF;SELECT [schema],I.id,$select FROM api.citems I INNER JOIN @T T ON T.id=I.id";
+                }
+                $q.=";SET NOCOUNT OFF;SET TEXTSIZE -1;";
+                $select=!$aim->select || $aim->select=='*'?($aim->id?$selectall:$selectlist):$aim->select;
+                $fields=array_diff(explode(',',$select),explode(',',$selectall.',schema,masterID,id,level'));
+                $select=implode(',',array_intersect(explode(',',$select),explode(',',($selectall).',level')));
+                $top=$_GET[top]?:10000;
+                $q.=";SELECT id,[schema],LastModifiedDateTime,CreatedDateTime,ParentFolderId,SourceObjectId,StartDateTime,ChildIndex,UniqueKey,masterID".($select?",$select":"")." \r\nFROM (SELECT DISTINCT TOP $top T._id FROM @T T) T \r\nINNER JOIN api.userItems(0$user->id) I \r\nON I.id=T._id;SELECT * FROM @R";
+                if($aim->select=='*')$q.=";WITH P (level,id,srcID)AS(SELECT 0,I._id,I._id FROM @T I UNION ALL SELECT level+1,P.id,ISNULL(I.inheritedID,I.srcID) FROM api.items I INNER JOIN P ON I.id=P.srcID AND level<10) SELECT P.id,A.aid,A.id attributeItemID,A.name,A.value,A.itemID,A.modifiedDT,A.userID FROM P INNER JOIN api.attributes A ON A.id=P.srcID AND A.value IS NOT NULL AND P.srcID IS NOT NULL ORDER BY P.level";
+
+                //SELECT S.id,F.id itemID,F.name,F.value,F.itemID FROM @T T INNER JOIN om.itemSrc S ON S.id=".(property_exists($aim,selectall)?"T._id":$aim->id)." INNER JOIN om.fields F ON F.id=S.srcID ORDER BY S.level
+                else if($fields)$q.=";SELECT A.id,A.name,A.value,A.itemID,A.modifiedDT,A.userID FROM @T T INNER JOIN api.attributes A ON A.id=T._id AND[fieldID]IN(SELECT[id]FROM[om].[field]WHERE[name]IN('".implode("','",$fields)."'))";
+                if($aim->select=='*' && $aim->id && $user->id)$q.=";SET NOCOUNT ON;EXEC api.addItemUserVisit @id=$aim->id,@userID=$user->id";
+                if ($headers["odata-version"]){
+                  header('Content-Type: application/json; odata.metadata=minimal');
+                  header('OData-Version: 4.0');
+                  $output->{"@odata.context"} = $root.array_shift(explode("?",$_SERVER[REQUEST_URI]))."\$metadata#".$aim->schema;
+                  if(!$_GET[id]){
+                    $output->{"@odata.nextLink"}= $root.$_SERVER[REQUEST_URI]."&%24skip=8";
+                  }
+                }
+                $res=query($q);
+                $getItem = $aim->schema && $aim->id && !$aim->child && !$aim->folder;
+                $datavalue = [];
+                while($row=fetch_object($res)) {
+                  //echo $row->id;
+                  //return $q;
+                  $items->{$row->id} = $item = $getItem ? $data : (object)array();
+                  $Id=getId([hostID=>$row->hostID,schema=>$row->schema,id=>$row->id,uid=>$row->uid]);
+                  array_push($datavalue, $items->{$row->id});
+                  $aim->userUID='4EC074C5-0A13-4250-9B21-565B809ABAE5';
+                  if ($headers["odata-version"]){
+                    $item->{"@odata.id"}=$odataId=$root."/$aim->host/api/$aim->version/Users('$aim->userUID@$aim->hostUID')/$row->schema('$Id')";
+                    $item->{"@odata.etag"}="W/'".base64_encode($row->LastModifiedDateTime)."'";
+                  }
+
+
+                  //$item->{"@odata.editLink"}=$odataId;
+                  $item->Id=$Id;
+                  //header('Content-Type: application/json; odata.metadata=minimal');
+                  //header('OData-Version: 4.0');
+                  //}
+                  //}
+                  if($row->masterID && !$row->ParentFolderId) query("UPDATE om.items SET ParentFolderId='".($row->ParentFolderId=getId($row->masterID))."' WHERE id=$row->id");
+                  if($row->srcID && !$row->SourceObjectId) query("UPDATE om.items SET SourceObjectId='".($row->SourceObjectId=getId($row->srcID))."' WHERE id=$row->id");
+                  foreach($row as $key=>$value){
+                    if(is_null($value)||$value==="") continue;
+                    if(is_numeric($value))$value=floatval($value);
+                    if(is_string($value) && in_array($value[0],array('{','['))) $value=json_decode($value);
+                      else if(is_string($value)) $value=trim($value);
+                      $item->{$key}=$value;
+                    }
+                  }
+                  if(!$getItem) $data->value=$datavalue;
+                  foreach($items as $id=>$row) if($row->schema==attribute && $row->masterID && $items->{$row->masterID}){
+                    $items->{$row->masterID}->values->{$row->name}->id=$row->id;
+                    if($row->detailID)$items->{$row->masterID}->values->{$row->name}->detailID=$row->detailID;
+                  }
+                  if(next_result($res)) while($row=fetch_object($res)) {
+                    if($row->fromID && $row->toID && $items->{$row->fromID}) {
+                      $items->{$row->fromID}->linkto->{$row->toID}=$row->ref;
+                      $a=$items->{$row->fromID}->link->{$row->ref}=$items->{$row->fromID}->link->{$row->ref}?:array();
+                      array_push($items->{$row->fromID}->link->{$row->ref},$row->toID);
+                    }
+                  }
+                  if(next_result($res)) while($row=fetch_object($res)) if($row->name) {
+                    //$row->name=ucfirst($row->name);
+                    if(property_exists($aim,sync) || $headers['odata-version']) $items->{$row->id}->{$row->name}=$row->value;
+                    else {
+                      //$items->{$row->id}->values->{$row->name}=$items->{$row->id}->values->{$row->name}?:$row;
+                      if($row->attributeItemID==$row->id)$items->{$row->id}->values->{$row->name}->aid=$row->aid;
+                      if($row->attributeItemID!=$row->id && !$items->{$row->id}->values->{$row->name}->valueSource)$items->{$row->id}->values->{$row->name}->valueSource=$row->value;
+                      if($row->value!="" && !$items->{$row->id}->values->{$row->name}->value)$items->{$row->id}->values->{$row->name}->value=$row->value;
+                      if($row->itemID && !$items->{$row->id}->values->{$row->name}->itemID)$items->{$row->id}->values->{$row->name}->itemID=$row->itemID;
+                      if($row->userID && !$items->{$row->id}->values->{$row->name}->userID)$items->{$row->id}->values->{$row->name}->userID=$row->userID;
+                      if($row->modifiedDT && !$items->{$row->id}->values->{$row->name}->modifiedDT)$items->{$row->id}->values->{$row->name}->modifiedDT=$row->modifiedDT;
+                      //if ($row->itemID && $row->itemID!=$row->id) $items->{$row->id}->values->{$row->name}->sourceValue=$row->value;
+                      //if(!$row->itemID)unset($row->itemID);
+                      //unset($row->id,$row->name);
+                      //unset($row->name);
+                    }
+                  }
+                  if($aim->type==tbl){
+                    header("Content-type: text/html");
+                    echo '<base target="_blank"><link href="/lib/css/tbl.css" rel="stylesheet" /><table>';
+                    $select=explode(",",$aim->select);
+                    echo '<tr><td>'.implode("</td><td>",$select)."</td></tr>";
+                    foreach ($items as $id=>$item){
+                      echo "<tr>";
+                      foreach($select as $key) echo"<td>".($item->{$key}?:($item->values&&$item->values->{$key}?$item->values->{$key}->value:""))."</td>";
+                      echo "</tr>";
+                    }
+                    echo "</table>";
+                    die();
+                  }
+                  if(strpos($_GET[contentType], xml) !== false) {
+                    header("Content-type: text/xml");
+                    $xml = new SimpleXMLElement('<value></value>');
+                    foreach ($items as $id=>$item){
+                      //if(!$item->schema) continue;
+                      $xmlItem = $xml->addChild($item->schema);
+                      if ($item->filterfields) {
+                        $xmlValues=$xmlItem->addChild('filterfields');
+                        foreach ($item->filterfields as $key => $value) $xmlValues[$key]=$value;
+                        unset($item->filterfields);
+                      }
+                      if ($item->values) {
+                        $xmlValues=$xmlItem->addChild('values');
+                        foreach ($item->values as $key => $value) {
+                          $xmlValue=$xmlValues->addChild($key,$value->value);
+                          unset($value->value);
+                          foreach ($value as $attrname => $attr) $xmlValue[$attrname]=$attr;
+                        }
+                        unset($item->values);
+                      }
+                      foreach ($item as $key => $value) if ($value!="") $xmlItem[$key]=$value;
+                    }
+                    die($xml->asXml());
+                  }
+                  //die(a);
+                  $data->count=count($data->value);
+                  return $data;
+                }
+                function put(){
+                  //echo "put0";
+                  //die(kkkk);
+                  //die(json_encode(array(test=>max)));
+                  global $aim,$put;
+                  $put=json_decode(file_get_contents('php://input'));
+                  $ret->value=array();
+                  foreach ($put->value as $item) {
+                    if (class_exists($class=$item->schema) && method_exists($class,post)) $class::post($item);
+                    array_push($ret->value,$item=item::post($item));
+                    //array_push($ret->value,class_exists($class=$item->schema) && method_exists($class,post) ? $class::post($item) : item::item(item::post($item)) );
+                  }
+
+                  header("Content-Type: application/json");
+                  header('X-Content-Type-Options: nosniff');
+                  die(json_encode($ret));
+                }
+                function post(){
+                  global $aim;
+                  $put=$input=json_decode(file_get_contents('php://input'));
+                  $value=$input->value?:[$input];
+                  $ret->value=array();
+                  foreach ($value as $item) {
+                    if (class_exists($class=$item->schema) && method_exists($class,post)) $class::post($item);
+                    array_push($ret->value,$item=item::post($item));
+                  }
+                  header("Content-Type: application/json");
+                  header('X-Content-Type-Options: nosniff');
+                  die(json_encode($ret));
+                }
+                function delete(){
+                  global $aim;
+                  //err($aim);
+                  $row=fetch_object(dbexec("api.delItem",array(id=>$aim->id,userID=>$cookie->userID,hostID=>$cookie->hostID)));
+                  //rrmdir($_SERVER['DOCUMENT_ROOT']."/content/$row->path");
+                  die($row->path);
+                }
+              }
 class item {
 	function put(){
         //echo "put0";
@@ -1627,9 +1332,6 @@ class item {
         header('X-Content-Type-Options: nosniff');
 		die(json_encode($ret));
 	}
-
-
-
 	function clean($row=null){
 		foreach($row as $key=>$value){
 			//if(is_null($value)||$value==="")$row->$key=null;
@@ -1749,33 +1451,6 @@ class item {
         v1::reindex($row->id);
         die();
     }
-	//function buildsearch($id){
-	//    global $aim,$aim,$location,$cookie;
-	//    $id=$id?:$aim->id;
-	//    //echo $id;
-	//    $q=";SET NOCOUNT OFF;SELECT id,value,name FROM om.fields WHERE id=$id";
-	//    $res=query($q);
-	//    while($row=fetch_object($res))if($row->name && $row->value)$item->values->{$row->name}=$row->value;
-	//    //err($item);
-	//    if(!$item)die('geen item');
-	//    //$q='';
-	//    //foreach($items as $id=>$item){
-	//    //$q=";DELETE om.itemWord WHERE itemID=$id";
-	//    $wordcnt=null;
-	//    foreach($item->values as $name=>$value){
-	//        if($value[0]=='{')continue;
-	//        $words=words($value);
-	//        foreach ($words as $word)$wordcnt[strtolower($word)]+=1;
-	//    }
-	//    $q=";UPDATE om.items SET scanDT=GETUTCDATE() WHERE id=$id;DELETE om.itemWord WHERE itemID=$id";
-	//    foreach ($wordcnt as $word=>$cnt)$q.=PHP_EOL.";EXEC api.addItemWord '".toUtf8(dbvalue($word))."',$id,$cnt";
-	//    //echo $q;
-	//    //}
-	//    //echo str_replace(";",PHP_EOL.";",$q);
-	//    query($q);
-	//    //echo $id;
-	//    die();
-	//}
 	function getCredentials(){
 		global $aim;
 		die(json_encode($aim->cookie));
@@ -1962,18 +1637,6 @@ class item {
 		$allwords = array_values(array_filter(array_unique(preg_split("/ /", preg_replace('/\[|\]|\(|\)|\+|\-|:|;|\.|,|\'|~|\/|_|=|\?|#|>/',' ',strtolower(h2u($allwords))), -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY)),'isword'));
 		//die(implode(", ",$allwords));
 	//return array_values($temp);
-
-		//$allwords=words($allwords);
-
-		//$allwords=words($allwords);
-
-		//die(json_encode($allwords));
-
-		//foreach($item as $key=>$value)foreach(words(strip_tags($value)) as $word)$wordcnt[toUtf8(dbvalue(strtolower($word)))]+=1;
-		//if(next_result($res))while($row=fetch_object($res)){
-		//    if(!$row->value || $row->value[0]=='{')continue;
-		//    foreach (words(strip_tags($row->value)) as $word)$wordcnt[toUtf8(dbvalue(strtolower($word)))]+=1;
-		//}
 		$q="
 			DELETE om.itemWord WHERE itemID=$id
 			DECLARE @W TABLE (word VARCHAR(500))
@@ -1985,38 +1648,8 @@ class item {
 			UPDATE om.items SET indexDT=GETUTCDATE() WHERE id=$id
 			EXEC api.setItem @id=$id
 		";
-		//foreach ($wordcnt as $word=>$cnt)$q.=";EXEC api.addItemWord '".toUtf8(dbvalue($word))."',$id,$cnt";
-
-		//echo $q;
-		//die();
-		//die($q);
 		query($q);
-		//die(a);
 	}
-	//function reindex($id){
-	//    $q=";DELETE om.itemWord WHERE itemID=$id;SELECT nr,[schema],keyname,name,title,config FROM api.citems WHERE id=$id;SELECT name,value FROM om.fields WHERE id=$id";
-	//    $item=fetch_object($res=query($q));
-	//    $config=json_decode($item->config);
-	//    unset($item->config);
-	//    foreach($item as $key=>$value)foreach(words($value) as $word)$wordcnt[strtolower($word)]+=1;
-	//    $kop=array("","","");
-	//    if(next_result($res))while($row=fetch_object($res)){
-	//        if(!$row->value || $row->value[0]=='{')continue;
-	//        $prop=$config->fields->{$row->name};
-	//        $value=dbvalue(property_exists($prop,idname) && $item->{$prop->idname} ? $item->{$prop->idname} : $row->value);
-	//        if(property_exists($prop,kop))$kop[$prop->kop].="$value ";
-	//        if(property_exists($prop,idname)&& property_exists($value,itemID))$put->{$prop->idname}=$value->itemID;
-	//        if(property_exists($prop,filter))$filterfields->{$row->name}=$value;
-	//        foreach (words($row->value) as $word)$wordcnt[strtolower($word)]+=1;
-	//    }
-	//    $put->title=$kop[0];
-	//    $put->subject=$kop[1];
-	//    $put->summary=$kop[2];
-	//    $put->filterfields=json_encode($filterfields);
-	//    $q="UPDATE om.items SET ".paramfields($put)." WHERE id=$id";
-	//    foreach ($wordcnt as $word=>$cnt)$q.=";EXEC api1.addItemWord '".toUtf8(dbvalue($word))."',$id,$cnt";
-	//    query($q);
-	//}
 	function mailing(){
 		global $aim,$aim,$location,$cookie;
 		$res=query("select userID from om.itemfav where id=$aim->id;");
@@ -2154,23 +1787,6 @@ class account {
         exit(json_encode($data));
 	}
 }
-
-
-//class contacts {
-//    function get() { require_once(__DIR__."/mse.php"); }
-//}
-
-//class messages {
-//    function get() { require_once(__DIR__."/mse.php"); }
-//}
-//class events{
-//    function get() { require_once(__DIR__."/mse.php"); }
-//}
-//class calendarview{
-//    function get() { require_once(__DIR__."/mse.php"); }
-//}
-
-
 class sms {
 	function send($recipients='',$body='',$originator='') {
 		$put = json_decode(file_get_contents('php://input'));
@@ -2190,7 +1806,6 @@ class sms {
 		die(json_encode($response));
 	}
 }
-
 class mobilephone {
 	function put() {
         global $aim;
@@ -2215,7 +1830,6 @@ class mobilephone {
 		//die(json_encode(array(state=>send,code=>$put->code)));
 	}
 }
-
 class iot {
     function post() {
         global $aim,$aim,$location,$cookie;
@@ -2477,82 +2091,6 @@ class fav {
         die();
     }
 }
-//class items {
-//  function get(){
-//    global $aim,$aim,$location,$cookie;
-//    $items=$where=array();
-//    $_POST=$_GET;
-//    $post=(object)$_POST;
-//    $post->id=$aim->id;
-//    $post->ClientID=$post->ClientID?$post->ClientID:0;
-//    //$user=fetch_object(query("SELECT * FROM api.hostAccountGet('$post->host','$post->sessionID');"));
-//    //$aim=(object)$_GET;
-//    //$cookie=(object)$_COOKIE;
-//    $user=fetch_object(query("SELECT * FROM api.hostAccountGetByUserID('$cookie->host',$cookie->userID);"));
-//    //$user=(object)array(UserID=>$_COOKIE[userID],HostID=>$_COOKIE[hostID],HostName=>$_COOKIE[hostName]);
-//    //$q="SET NOCOUNT ON;SET TEXTSIZE 2147483647;";
-//    //$where=array();
-//    if ($post->classID[0]=='.') {
-//        if (file_exists($fname=$_SERVER['DOCUMENT_ROOT']."/sites/$user->HostName/api/index.php")) require_once ($fname);
-//        $a=explode('.',$post->classID);
-//        array_shift($a);
-//        $table=array_shift($a);
-//        $table=new $table();
-//        $q.=$table->itemItemsGet();
-//        //$fname=$_SERVER['DOCUMENT_ROOT']."/sites/$user->HostName/api/index.php";
-//        //if (file_exists($fname)) require_once ($fname);
-//    }
-//    else if ($post->id) $q.="SELECT TOP 50000 D.id,D.idx,D.detailID,D.srcID,D.selected,I.name,I.classID,I.masterID,I.startDT,I.finishDT,I.state,I.obj,I.cp,I.hasChildren,I.activeCnt,I.modifiedDT,CASE WHEN ISNULL(M.detailID,M.id)=D.masterID THEN 'child' ELSE 'derived' END AS reltype FROM api.items D INNER JOIN api.items I ON I.id=ISNULL(D.detailID,D.id) INNER JOIN api.items M ON M.id=$post->id AND D.userID IN (0,0$user->UserID) AND ISNULL(M.detailID,M.id) IN (D.masterID) ORDER BY idx";
-//    else if ($post->classID==1060 && $post->keyID==1) $q.="SELECT TOP 50000 I.*,cp,cd,sd,stock FROM api.itemslist I
-//        LEFT OUTER JOIN (SELECT id field_id,name,value FROM om.fields F WHERE fieldID IN (892,978,1113)AND userID IN ($cookie->hostID,0$user->UserID,$post->ClientID,0,1)) X PIVOT(MAX(value)FOR name IN (cd,sd,stock)) F ON F.field_id = I.id
-//        LEFT OUTER JOIN (SELECT id field_id,name,value FROM om.fields F  WHERE fieldID IN (1066)) X PIVOT(MAX(value)FOR name IN (cp)) F2 ON F2.field_id = I.srcID
-//        WHERE I.classID=1060 AND I.hostID=$cookie->hostID ";
-//    //else if ($post->classID==1060 && $post->keyID==1) $q.="SELECT TOP 50000 I.*,F.cd,F.sd,F.stock FROM api.itemslist I LEFT OUTER JOIN (SELECT F.id,F.name,F.value FROM om.fields F WHERE F.hostID=$cookie->hostID AND userID IN ($cookie->hostID,0$user->UserID,$post->ClientID,0,1)) X PIVOT(MAX(value)FOR name IN (cd,sd,stock)) F ON F.id=I.id WHERE I.classID=1060 ";
-//    else if ($post->classID==1060 && $post->keyID==2) $q.="SELECT TOP 50000 I.*,F.cd,F.sd,F.stock FROM api.itemslist I INNER JOIN (SELECT F.id,F.name,F.value FROM om.fields F WHERE F.hostID=$cookie->hostID AND userID IN ($cookie->hostID,0$user->UserID,$post->ClientID,0,1)) X PIVOT(MAX(value)FOR name IN (cd,sd,stock)) F ON F.id=I.id WHERE I.classID=1060 AND F.sd IS NOT NULL ";
-//    else if ($post->classID==1060 && $post->keyID==3) $q.="SELECT TOP 50000 I.*,F.cd,F.sd,F.stock FROM api.itemslist I INNER JOIN (SELECT F.id,F.name,F.value FROM om.fields F WHERE F.hostID=$cookie->hostID AND userID IN ($cookie->hostID,0$user->UserID,$post->ClientID,0,1)) X PIVOT(MAX(value)FOR name IN (cd,sd,stock)) F ON F.id=I.id WHERE I.id IN (SELECT id FROM om.fields where userid=$post->ClientID and name='cd') AND I.classID=1060 AND F.sd IS NOT NULL ";
-//    else if ($post->classID=='his') die();//$q.="EXEC api.getUserItems @UserID=0$user->UserID,@HostID=$cookie->hostID ";
-//    else if ($post->classID=='mse' && $post->keyID=='contacts') $q.="SELECT TOP 50000 I.id,I.name,I.classID,I.state,I.obj,I.cp,I.hasChildren,I.idx,I.modifiedDT FROM api.items I INNER JOIN mse.contact C ON C.userID=0$user->UserID AND C.ContactID=I.id ";
-//    else {
-//      $q.="SELECT TOP 50000 I.*,UV.lastvisitDT FROM api.itemslist I LEFT OUTER JOIN om.itemuservisit UV ON UV.id=I.id AND UV.userID=0$user->UserID AND UV.HostID=0$cookie->hostID";
-//      if ($post->hostID) $cookie->hostID=$post->hostID;
-//      array_push($where,"I.classID IN ($post->classID)");
-//      //if ($post->keyID==1) array_push($where,"(I.hostID IN ($cookie->hostID,0) AND I.userID IN ($user->UserID,0)) OR I.www=1");
-//      if ($post->keyID==1) array_push($where,"(I.hostID = $cookie->hostID AND (I.hostID=1 OR I.userID IN ($user->UserID,0)))");
-//      else array_push($where,"(I.hostID = $cookie->hostID AND I.userID IN ($user->UserID,0))");
-//      if ($post->filter) array_push($where,urldecode($post->filter));
-//    }
-//    if ($post->q && $post->q!='*') {
-//        //die($post->q);
-//        $post->q=urldecode(trim($post->q));
-//        $post->q=str_replace('*','%',$post->q);
-//        $qa=explode(" ",$post->q);
-//        foreach ($qa AS $qs) {
-//            $qsqa=array();
-//            $qsa=explode(',',$qs);
-//            foreach ($qsa as $qsas) {
-//                $qsas=dbvalue(trim($qsas));
-//                $qs="I.findtext LIKE '%$qsas%' COLLATE Latin1_general_CI_AI OR I.name LIKE '%$qsas%' COLLATE Latin1_general_CI_AI OR I.subject LIKE '%$qsas%' COLLATE Latin1_general_CI_AI OR I.keyname LIKE '%$qsas%' COLLATE Latin1_general_CI_AI";
-//                array_push($qsqa,$qs);//"I.findtext LIKE '%$qsas%' OR I.name LIKE '%$qsas%' OR I.id IN (SELECT DISTINCT id FROM omv.itemvalues WHERE classID IN ($post->classID) AND value LIKE '%$qsas%' )");
-//            }
-//            array_push($where,"(".implode(" OR ",$qsqa).")");
-//        }
-//    }
-//    $where=implode(')AND(',$where);
-//    if ($where) $q.=(strpos( $q, "WHERE I.") !== false?" AND ":" WHERE ")." ($where)";
-//    //die($q);
-//    $res = query($q);
-//    $items=array();
-//    while($row=fetch_object($res)){
-//        $item=$row->obj?json_decode($row->obj):(object)array();
-//        unset($row->obj);
-//        foreach ($row as $key=>$value) $item->$key=$value;
-//        if (function_exists(dorow)) dorow($item);
-//        array_push($items,$item);
-//    }
-//    close();
-//    die(json_encode($items));
-//  }
-//}
 class css {
     function GET(){
         $aim=(object)$_GET;$post=(object)$_POST;
@@ -2613,10 +2151,6 @@ class aliconnector {
     function checksrvdata () {
 	    extract($GLOBALS);
 		extract((array)$aim->client);
-		//err(aaaaaa,$aim->client);
-        //$device=$aim->device;
-        //err($device);
-		//err("EXEC api.checksrvdata @deviceUID='$cookie->deviceUID';");
         $data->device=fetch_object($res=query("EXEC api.getDeviceData @deviceID='".$device->id."';"));
         next_result($res);
         $data->printjob=fetch_object($res);
@@ -2703,6 +2237,4 @@ class upload{
 		die();
     }
 }
-
-
 ?>
