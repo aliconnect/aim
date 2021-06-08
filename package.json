@@ -1,0 +1,32 @@
+{
+  "name": "@aliconnect/aim",
+  "version": "0.0.1",
+  "description": "Automation Integration Manager",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aliconnect/aim.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aliconnect/aim/issues"
+  },
+  "dependencies": {
+    "@aliconnect/api": "0.0.x",
+
+    "atob": "^2.1.2",
+    "btoa": "^1.2.1",
+    "http": "0.0.1-security",
+    "https": "^1.0.0",
+    "ws": "^7.2.3",
+
+    "tedious": "^9.2.1",
+    "jsmodbus": "^3.1.6",
+    "net": "^1.0.2",
+    "snmp-native": "^1.2.0"
+  },
+  "devDependencies": {
+    "@aliconnect/sdk": "0.0.x"
+  },
+  "homepage": "https://aliconnect.nl",
+  "author": "Max van Kampen",
+  "license": "ISC"
+}
