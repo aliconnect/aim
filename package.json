@@ -1,7 +1,7 @@
 {
   "name": "@aliconnect/aim",
   "version": "0.0.1",
-  "description": "Automation Integration Manager",
+  "description": "Automation Integration Manager Node",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aliconnect/aim.git"
